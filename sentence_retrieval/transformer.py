@@ -15,6 +15,7 @@ parser.add_argument('--dataset', type=str, required=True)
 parser.add_argument('--document-retrieval', type=str, required=True)
 parser.add_argument('--model', type=str, required=True)
 parser.add_argument('--flexk', type=str)
+parser.add_argument('--threshold', type=float, default=0.5, required=False)
 parser.add_argument('--k2', type=str)
 parser.add_argument('--k3', type=str)
 parser.add_argument('--k4', type=str)
@@ -64,7 +65,7 @@ def output_k(output_path, k=None):
             evidence = {doc_id: list(sorted(sentence_scores.argsort()[-k:][::-1].tolist()))
                         for doc_id, sentence_scores in result['evidence_scores'].items()}
         else:
-            evidence = {doc_id: (sentence_scores >= 0.5).nonzero()[0].tolist()
+            evidence = {doc_id: (sentence_scores >= args.threshold).nonzero()[0].tolist()
                         for doc_id, sentence_scores in result['evidence_scores'].items()}
         output.write({
             'claim_id': result['claim_id'],

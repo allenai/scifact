@@ -77,7 +77,7 @@ for sentence_retrieval in sentence_retrievals:
     claim_id = sentence_retrieval['claim_id']
     data = dataset[claim_id]
     for doc_id, evidence in sentence_retrieval['evidence'].items():
-        if data['evidence'].get(doc_id):
+        if data['evidence'].get(doc_id) and any(set(evidence).issuperset(es['sentences']) for es in data['evidence'][doc_id]):
             retrieval_preds.append((claim_id, int(doc_id), data['label'], evidence))
 
 
