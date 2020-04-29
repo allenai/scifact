@@ -52,27 +52,21 @@ def encode(sentences, claims):
 
 with torch.no_grad():
     for data, retrieval in tqdm(list(zip(dataset, sentence_retrieval))):
+        assert data['id'] == retrieval['claim_id']
+
         claim = data['claim']
-        sentences = [' '.join([corpus[int(doc_id)]['abstract'][i] for i in indices])
-                     for doc_id, indices in retrieval['evidence'].items() if indices]
-        if not sentences:
-            output.write({
-                'claim_id': data['id'],
-                'labels': {}
-            })
-        else:
-            encoded_dict = encode(sentences, [claim] * len(sentences))
-            labels_scores = torch.softmax(model(**encoded_dict)[0], dim=1)
-            labels_index = labels_scores.argmax(dim=1).tolist()
-            labels_confidence = [labels_scores[r, c].item() for r, c in enumerate(labels_index)]
-
-            # print(labels_index, labels_confidence, labels_scores)
-
-            output.write({
-                'claim_id': data['id'],
-                'labels': {
-                    doc_id: {
-                        'label': LABELS[index],
-                        'confidence': round(confidence, 4)
-                    } for doc_id, index, confidence in zip(retrieval['evidence'].keys(), labels_index, labels_confidence)}
-            })
+        results = {}
+        for doc_id, indices in retrieval['evidence'].items():
+            if not indices:
+                results[doc_id] = {'label': 'NOT_ENOUGH_INFO', 'confidence': 1}
+            else:
+                evidence = ' '.join([corpus[int(doc_id)]['abstract'][i] for i in indices])
+                encoded_dict = encode([evidence], [claim])
+                label_scores = torch.softmax(model(**encoded_dict)[0], dim=1)[0]
+                label_index = label_scores.argmax().item()
+                label_confidence = label_scores[label_index].item()
+                results[doc_id] = {'label': LABELS[label_index], 'confidence': round(label_confidence, 4)}
+        output.write({
+            'claim_id': data['id'],
+            'labels': results
+        })
