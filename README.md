@@ -1,5 +1,32 @@
 # SciFact Baseline
 
+## Dataset Schema
+
+`dataset.jsonl`
+```
+{
+    "id": number,
+    "claim": string,
+    "label": enum("SUPPORT" | "CONTRADICT" | "NOT_ENOUGH_INFO"),
+    "evidence": {
+        "doc_id": {
+            "sentences": number[]
+        }
+    },
+    "cited_doc_ids": number[]
+}
+```
+
+`corpus.jsonl`
+```
+{
+    "doc_id": number,
+    "title": string,
+    "abstract": string[],
+    "structured": boolean
+}
+```
+
 ## Model Download
 
 All the model weights are stored separately using Google drive. You can download the corresponding
