@@ -16,15 +16,18 @@ The data are located in the `data` subdirectory of this repository. The claims a
     "claim": string,                                                     # The text of the claim.
     "label": enum("SUPPORT" | "CONTRADICT" | "NOT_ENOUGH_INFO"),         # The claim's label.
     "evidence": {                                                        # The evidence for the claim.
-        "doc_id": {                                                      # GORC ID of evidence document.
+        "doc_id": [                                                      # The rationales for a single document, keyed by S2ORC ID.
+            {
+            "label": string,                                             # Label for the rationale.
             "sentences": number[]                                        # Rationale sentences.
-        }
+            }
+        ]
     },
     "cited_doc_ids": number[]                                            # The claim's "cited documents".
 }
 ```
 
-NOTE: In the task definition as presented in the [paper](https://arxiv.org/abs/2004.14974), a single claim may have both supporting and contradictory evidence documents. However, these claims are not included in our initial dataset release. Therefore, the claim is given a single label; all evidence documents listed have the same label with respect to the claim.
+NOTE: In our dataset, the labels for all rationales within a single abstract will be the same.
 
 `corpus.jsonl` python
 ```
@@ -35,5 +38,3 @@ NOTE: In the task definition as presented in the [paper](https://arxiv.org/abs/2
     "structured": boolean                                                # Indicator for whether this is a structured abstract.
 }
 ```
-
-## Model Download
