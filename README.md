@@ -2,7 +2,7 @@
 
 This repository contains data and code for the paper [Fact or Fiction: Verifying Scientific Claims](https://arxiv.org/abs/2004.14974).
 
-- Project [website](https://github.com/allenai/scifact-demo).
+- Project [website](https://scifact.allenai.org).
 
 ## Data
 
