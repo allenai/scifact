@@ -15,3 +15,7 @@ Pre-trained models are available. For more information on downloading the models
 ## Evaluation scripts
 
 We will add an evaluation script shortly.
+
+## Contact
+
+Email: `davidw@allenai.org`.
