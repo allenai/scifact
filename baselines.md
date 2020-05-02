@@ -100,6 +100,8 @@ Additional args:
 * `--threshold` (default: 0.5) the threshold for flex output
 * `--output-k?` and `--output-flex` are optional. Only provide if you need them.
 
+Download models with prefix: `sentence_retrieval` for rationale selection module.
+
 #### Evaluate
 ```sh
 python rationale_selection/evaluate.py \
@@ -129,6 +131,8 @@ python label_prediction/transformer.py \
     --model PATH_TO_MODEL \
     --output label_prediction.jsonl
 ```
+
+Download models with prefix: `nli` for label prediction module.
 
 #### Evaluate
 ```sh
