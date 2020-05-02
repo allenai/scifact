@@ -1,7 +1,3 @@
-"""
-Evaluates NLI results
-"""
-
 import argparse
 import jsonlines
 
@@ -10,42 +6,37 @@ from sklearn.metrics import f1_score, precision_score, recall_score, confusion_m
 parser = argparse.ArgumentParser()
 parser.add_argument('--corpus', type=str, required=True)
 parser.add_argument('--dataset', type=str, required=True)
-parser.add_argument('--nli', type=str, required=True)
+parser.add_argument('--label-prediction', type=str, required=True)
 parser.add_argument('--filter', type=str, choices=['structured', 'unstructured'])
 args = parser.parse_args()
 
 corpus = {doc['doc_id']: doc for doc in jsonlines.open(args.corpus)}
 dataset = jsonlines.open(args.dataset)
-nli_results = jsonlines.open(args.nli)
+label_prediction = jsonlines.open(args.label_prediction)
 
 pred_labels = []
 true_labels = []
 
 LABELS = {'CONTRADICT': 0, 'NOT_ENOUGH_INFO': 1, 'SUPPORT': 2}
 
-hit_label = set()
-total = set()
-
-for data, nli in zip(dataset, nli_results):
-    assert data['id'] == nli['claim_id']
+for data, prediction in zip(dataset, label_prediction):
+    assert data['id'] == prediction['claim_id']
 
     if args.filter:
-        nli['labels'] = {doc_id: pred for doc_id, pred in nli['labels'].items()
-                         if corpus[int(doc_id)]['structured'] is (args.filter == 'structured')}
-    if not nli['labels']:
+        prediction['labels'] = {doc_id: pred for doc_id, pred in prediction['labels'].items()
+                                if corpus[int(doc_id)]['structured'] is (args.filter == 'structured')}
+    if not prediction['labels']:
         continue
 
     claim_id = data['id']
-    total.add(claim_id)
-    for doc_id, pred in nli['labels'].items():
+    for doc_id, pred in prediction['labels'].items():
         pred_label = pred['label']
-        true_label = data['label'] if data['evidence'].get(doc_id) else 'NOT_ENOUGH_INFO'
+        true_label = {es['label'] for es in data['evidence'].get(doc_id) or []}
+        assert len(true_label) <= 1, 'Currently support only one label per doc'
+        true_label = next(iter(true_label)) if true_label else 'NOT_ENOUGH_INFO'
         pred_labels.append(LABELS[pred_label])
         true_labels.append(LABELS[true_label])
-        if pred_label == true_label:
-            hit_label.add(claim_id)
 
-print(f'Hit Label          {round(len(hit_label) / len(total), 4)}')
 print(f'Macro F1:          {f1_score(true_labels, pred_labels, average="macro").round(4)}')
 print(f'Macro F1 w/o NEI:  {f1_score(true_labels, pred_labels, average="macro", labels=[0, 2]).round(4)}')
 print(f'F1:                {f1_score(true_labels, pred_labels, average=None).round(4)}')

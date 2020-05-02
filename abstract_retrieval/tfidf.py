@@ -1,7 +1,3 @@
-"""
-Performs document retrieval with tfidf
-"""
-
 import argparse
 import jsonlines
 import numpy as np

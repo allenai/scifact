@@ -1,7 +1,3 @@
-"""
-Performs nli with transformers
-"""
-
 import argparse
 import jsonlines
 
@@ -13,13 +9,13 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--corpus', type=str, required=True)
 parser.add_argument('--dataset', type=str, required=True)
 parser.add_argument('--model', type=str, required=True)
-parser.add_argument('--sentence-retrieval', type=str, required=True)
+parser.add_argument('--rationale-selection', type=str, required=True)
 parser.add_argument('--output', type=str, required=True)
 args = parser.parse_args()
 
 corpus = {doc['doc_id']: doc for doc in jsonlines.open(args.corpus)}
 dataset = jsonlines.open(args.dataset)
-sentence_retrieval = jsonlines.open(args.sentence_retrieval)
+rationale_selection = jsonlines.open(args.rationale_selection)
 output = jsonlines.open(args.output, 'w')
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -51,12 +47,12 @@ def encode(sentences, claims):
 
 
 with torch.no_grad():
-    for data, retrieval in tqdm(list(zip(dataset, sentence_retrieval))):
-        assert data['id'] == retrieval['claim_id']
+    for data, selection in tqdm(list(zip(dataset, rationale_selection))):
+        assert data['id'] == selection['claim_id']
 
         claim = data['claim']
         results = {}
-        for doc_id, indices in retrieval['evidence'].items():
+        for doc_id, indices in selection['evidence'].items():
             if not indices:
                 results[doc_id] = {'label': 'NOT_ENOUGH_INFO', 'confidence': 1}
             else:

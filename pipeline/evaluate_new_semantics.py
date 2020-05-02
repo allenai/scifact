@@ -67,7 +67,7 @@ def metrics(trues, preds):
 parser = argparse.ArgumentParser()
 parser.add_argument('--dataset', type=str, required=True)
 parser.add_argument('--sentence-retrieval', type=str, required=True)
-parser.add_argument('--nli', type=str, required=True)
+parser.add_argument('--label_prediction', type=str, required=True)
 args = parser.parse_args()
 
 dataset = {data['id']: data for data in jsonlines.open(args.dataset)}

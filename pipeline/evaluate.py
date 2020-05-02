@@ -46,13 +46,21 @@ def metrics(trues, preds):
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--dataset', type=str, required=True)
-parser.add_argument('--sentence-retrieval', type=str, required=True)
-parser.add_argument('--nli', type=str, required=True)
+parser.add_argument('--rationale-selection', type=str, required=True)
+parser.add_argument('--label-prediction', type=str, required=True)
 args = parser.parse_args()
 
 dataset = {data['id']: data for data in jsonlines.open(args.dataset)}
-sentence_retrievals = list(jsonlines.open(args.sentence_retrieval))
-nli_results = jsonlines.open(args.nli)
+rationale_selection = list(jsonlines.open(args.rationale_selection))
+label_prediction = jsonlines.open(args.label_prediction)
+
+
+def get_gold_label(claim_id: int, doc_id: int):
+    labels = {es['label'] for es in dataset[claim_id]['evidence'].get(str(doc_id)) or []}
+    if labels:
+        return next(iter(labels))
+    else:
+        return 'NOT_ENOUGH_INFO'
 
 trues = []
 for data in dataset.values():
@@ -60,33 +68,32 @@ for data in dataset.values():
         claim_id = data['id']
         for doc_id, evidence_sets in data['evidence'].items():
             evidence_sets = [es['sentences'] for es in evidence_sets]
-            trues.append((claim_id, int(doc_id), data['label'], evidence_sets))
+            trues.append((claim_id, int(doc_id), get_gold_label(claim_id, str(doc_id)), evidence_sets))
 
 document_preds = []
-for sentence_retrieval in sentence_retrievals:
-    claim_id = sentence_retrieval['claim_id']
+for selection in rationale_selection:
+    claim_id = selection['claim_id']
     data = dataset[claim_id]
-    for doc_id in sentence_retrieval['evidence'].keys():
+    for doc_id in selection['evidence'].keys():
         if data['evidence'].get(doc_id):
             gold_evidence = [s for es in data['evidence'][doc_id] for s in es['sentences']]
             document_preds.append(
-                (claim_id, int(doc_id), data['label'], gold_evidence))
+                (claim_id, int(doc_id), get_gold_label(claim_id, str(doc_id)), gold_evidence))
 
 retrieval_preds = []
-for sentence_retrieval in sentence_retrievals:
-    claim_id = sentence_retrieval['claim_id']
+for selection in rationale_selection:
+    claim_id = selection['claim_id']
     data = dataset[claim_id]
-    for doc_id, evidence in sentence_retrieval['evidence'].items():
+    for doc_id, evidence in selection['evidence'].items():
         if data['evidence'].get(doc_id) and any(set(evidence).issuperset(es['sentences']) for es in data['evidence'][doc_id]):
-            retrieval_preds.append((claim_id, int(doc_id), data['label'], evidence))
-
+            retrieval_preds.append((claim_id, int(doc_id), get_gold_label(claim_id, str(doc_id)), evidence))
 
 pipeline_preds = []
-for nli, sentence_retrieval in zip(nli_results, sentence_retrievals):
-    assert nli['claim_id'] == sentence_retrieval['claim_id']
-    for doc_id, label in nli['labels'].items():
+for prediction, selection in zip(label_prediction, rationale_selection):
+    assert prediction['claim_id'] == selection['claim_id']
+    for doc_id, label in prediction['labels'].items():
         if label['label'] != 'NOT_ENOUGH_INFO':
-            pipeline_preds.append((nli['claim_id'], int(doc_id), label['label'], sentence_retrieval['evidence'][doc_id]))
+            pipeline_preds.append((prediction['claim_id'], int(doc_id), label['label'], selection['evidence'][doc_id]))
 
 print(f'Document Retrieval: {metrics(trues, document_preds)}')
 print(f'Sentence Retrieval: {metrics(trues, retrieval_preds)}')

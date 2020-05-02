@@ -1,7 +1,3 @@
-"""
-Performs sentence retrieval with tfidf
-"""
-
 import argparse
 import jsonlines
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -10,7 +6,7 @@ import numpy as np
 parser = argparse.ArgumentParser()
 parser.add_argument('--corpus', type=str, required=True)
 parser.add_argument('--dataset', type=str, required=True)
-parser.add_argument('--document-retrieval', type=str, required=True)
+parser.add_argument('--abstract-retrieval', type=str, required=True)
 parser.add_argument('--min-gram', type=int, required=True)
 parser.add_argument('--max-gram', type=int, required=True)
 parser.add_argument('--k', type=int, required=True)
@@ -19,10 +15,10 @@ args = parser.parse_args()
 
 corpus = {doc['doc_id']: doc for doc in jsonlines.open(args.corpus)}
 dataset = jsonlines.open(args.dataset)
-document_retrieval = jsonlines.open(args.document_retrieval)
+abstract_retrieval = jsonlines.open(args.abstract_retrieval)
 output = jsonlines.open(args.output, 'w')
 
-for data, retrieval in zip(dataset, document_retrieval):
+for data, retrieval in zip(dataset, abstract_retrieval):
     assert data['id'] == retrieval['claim_id']
 
     evidence = {}

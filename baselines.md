@@ -5,131 +5,137 @@ model tar.gz and uncompress it in the `/models` directory
 
 [Download Models](https://drive.google.com/drive/folders/1ni0dI7dhYDsKFoz6mfdEZD3ibSawq3mY?usp=sharing)
 
-## Document Retrieval
+## Abstract Retrieval
 
 #### Oracle
 ```sh
-python document_retrieval/oracle.py \
-    --dataset data/dataset.test.jsonl \
-    --output document_retrieval.jsonl
+python abstract_retrieval/oracle.py \
+    --dataset data/claims_dev.jsonl \
+    --output abstract_retrieval.jsonl
 ```
+Additional args:
+* `--include-nei` (default: False) include documents for `NOT_ENOUGH_INFO` claims.
 
 #### TF-IDF
 ```sh
-python document_retrieval/tfidf.py \
+python abstract_retrieval/tfidf.py \
     --corpus data/corpus.jsonl \
-    --dataset data/dataset.test.jsonl \
+    --dataset data/claims_dev.jsonl \
     --k 3 \
     --min-gram 1 \
     --max-gram 2 \
-    --output document_retrieval.jsonl
+    --output abstract_retrieval.jsonl
 ```
 
 #### Evaluate
 ```sh
-python document_retrieval/evaluate.py \
-    --dataset data/dataset.test.jsonl \
-    --document-retrieval document_retrieval.jsonl
+python abstract_retrieval/evaluate.py \
+    --dataset data/claims_test.jsonl \
+    --abstract-retrieval abstract_retrieval.jsonl
 ```
 
 -------------------------------------------------------
 
-## Sentence Retrieval
+## Rationale Selection
 
 #### Oracle
 ```sh
-python sentence_retrieval/oracle.py \
-    --dataset data/dataset.test.jsonl \
-    --document-retrieval document_retrieval.jsonl \
-    --output sentence_retrieval.jsonl
+python rationale_selection/oracle.py \
+    --dataset data/claims_dev.jsonl \
+    --abstract-retrieval abstract_retrieval.jsonl \
+    --output rationale_selection.jsonl
 ```
 
 #### Oracle + TF-IDF
+Use oracle if gold rationale for that document is present, otherwise use tfidf.
 ```sh
-python sentence_retrieval/oracle_tfidf.py \
+python rationale_selection/oracle_tfidf.py \
     --corpus data/corpus.jsonl \
-    --dataset data/dataset.test.jsonl \
-    --output sentence_retrieval.jsonl
+    --dataset data/claims_dev.jsonl \
+    --abstract-retrieval abstract_retrieval.jsonl \
+    --output rationale_selection.jsonl
 ```
 
 #### First Sentence
 ```sh
-python sentence_retrieval/first.py \
-    --document-retrieval document_retrieval.jsonl \
-    --output sentence_retrieval.jsonl
+python rationale_selection/first.py \
+    --abstract-retrieval abstract_retrieval.jsonl \
+    --output rationale_selection.jsonl
 ```
 
 #### Last Sentence
 ```sh
-python sentence_retrieval/last.py \
+python rationale_selection/last.py \
     --corpus data/corpus.jsonl \
-    --document-retrieval document_retrieval.jsonl \
-    --output sentence_retrieval.jsonl
+    --abstract-retrieval abstract_retrieval.jsonl \
+    --output rationale_selection.jsonl
 ```
 
 #### TF-IDF
 ```sh
-python sentence_retrieval/tfidf.py \
+python rationale_selection/tfidf.py \
     --corpus data/corpus.jsonl \
-    --dataset data/dataset.test.jsonl \
-    --document-retrieval document_retrieval.jsonl \
+    --dataset data/claims_dev.jsonl \
+    --abstract-retrieval abstract_retrieval.jsonl \
     --min-gram 1 \
     --max-gram 1 \
     --k 2 \
-    --output sentence_retrieval.jsonl
+    --output rationale_selection.jsonl
 ```
 
 #### Transformer
 ```sh
-python sentence_retrieval/transformer.py \
+python rationale_selection/transformer.py \
     --corpus data/corpus.jsonl \
-    --dataset data/dataset.test.jsonl \
-    --document-retrieval document_retrieval.jsonl \
-    --model models/sentence_retrieval_scibert_fever_pretraining \
-    --flexk sentence_retrieval_flexk.jsonl \
-    --k2 sentence_retrieval_k2.jsonl \
-    --k3 sentence_retrieval_k3.jsonl \
-    --k4 sentence_retrieval_k4.jsonl \
-    --k5 sentence_retrieval_k5.jsonl
+    --dataset data/claims_dev.jsonl \
+    --abstract-retrieval abstract_retrieval.jsonl \
+    --model PATH_TO_MODEL \
+    --output-flex rationale_selection_flex.jsonl \
+    --output-k2 rationale_selection_k2.jsonl \
+    --output-k3 rationale_selection_k3.jsonl \
+    --output-k4 rationale_selection_k4.jsonl \
+    --output-k5 rationale_selection_k5.jsonl
 ```
+Additional args:
+* `--threshold` (default: 0.5) the threshold for flex output
+* `--output-k?` and `--output-flex` are optional. Only provide if you need them.
 
 #### Evaluate
 ```sh
-python sentence_retrieval/evaluate.py \
+python rationale_selection/evaluate.py \
     --corpus data/corpus.jsonl \
-    --dataset data/dataset.test.jsonl \
-    --sentence-retrieval sentence_retrieval.jsonl
+    --dataset data/claims_dev.jsonl \
+    --rationale-selection rationale_selection.jsonl
 ```
 
 -------------------------------------------------------
 
-## NLI
+## Label Prediction
 
 #### Oracle
 ```sh
-python nli/oracle.py \
-    --dataset data/dataset.test.jsonl \
-    --sentence-retrieval sentence_retrieval.jsonl \
-    --output nli.jsonl
+python label_prediction/oracle.py \
+    --dataset data/claims_dev.jsonl \
+    --rationale-selection rationale_selection.jsonl \
+    --output label_prediction.jsonl
 ```
 
 #### Transformers
 ```sh
-python nli/transformer.py \
+python label_prediction/transformer.py \
     --corpus data/corpus.jsonl \
-    --dataset data/dataset.test.jsonl \
-    --sentence-retrieval sentence_retrieval.jsonl \
-    --model models/nli_scibert_scifact \
-    --output nli.jsonl
+    --dataset data/claims_dev.jsonl \
+    --rationale-selection rationale_selection.jsonl \
+    --model PATH_TO_MODEL \
+    --output label_prediction.jsonl
 ```
-
 
 #### Evaluate
 ```sh
-python nli/evaluate.py \
+python label_prediction/evaluate.py \
     --corpus data/corpus.jsonl \
-    --dataset data/dataset.test.jsonl \
-    --nli nli.jsonl
+    --dataset data/claim_dev.jsonl \
+    --label-prediction label_prediction.jsonl
 ```
 
 -------------------------------------------------------
@@ -139,7 +145,7 @@ python nli/evaluate.py \
 #### Evaluate
 ```sh
 python pipeline/evaluate.py \
-    --dataset data/dataset.test.jsonl \
-    --sentence-retrieval sentence_retrieval.jsonl \
-    --nli nli.jsonl
+    --dataset data/claim_dev.jsonl \
+    --rationale-selection rationale_selection.jsonl \
+    --label-prediction label_prediction.jsonl
 ```

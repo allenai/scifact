@@ -1,7 +1,3 @@
-"""
-Evaluates sentence retrieval
-"""
-
 import argparse
 import jsonlines
 from sklearn.metrics import f1_score, precision_score, recall_score
@@ -9,13 +5,13 @@ from sklearn.metrics import f1_score, precision_score, recall_score
 parser = argparse.ArgumentParser()
 parser.add_argument('--corpus', type=str, required=True)
 parser.add_argument('--dataset', type=str, required=True)
-parser.add_argument('--sentence-retrieval', type=str, required=True)
+parser.add_argument('--rationale-selection', type=str, required=True)
 parser.add_argument('--filter', type=str, choices=['structured', 'unstructured'])
 args = parser.parse_args()
 
 corpus = {doc['doc_id']: doc for doc in jsonlines.open(args.corpus)}
 dataset = jsonlines.open(args.dataset)
-sentence_retrieval = jsonlines.open(args.sentence_retrieval)
+rationale_selection = jsonlines.open(args.rationale_selection)
 
 hit_one = set()
 hit_set = set()
@@ -24,7 +20,7 @@ total = set()
 pred = set()
 true = set()
 
-for data, retrieval in zip(dataset, sentence_retrieval):
+for data, retrieval in zip(dataset, rationale_selection):
     assert data['id'] == retrieval['claim_id']
 
     if args.filter is not None:

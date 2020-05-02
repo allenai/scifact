@@ -1,13 +1,9 @@
-"""
-Evaluates document retrieval.
-"""
-
 import argparse
 import jsonlines
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--dataset', type=str, required=True)
-parser.add_argument('--document-retrieval', type=str, required=True)
+parser.add_argument('--abstract-retrieval', type=str, required=True)
 args = parser.parse_args()
 
 dataset = {data['id']: data for data in jsonlines.open(args.dataset)}
@@ -15,7 +11,7 @@ dataset = {data['id']: data for data in jsonlines.open(args.dataset)}
 hit_one = 0
 hit_all = 0
 total = 0
-for retrieval in jsonlines.open(args.document_retrieval):
+for retrieval in jsonlines.open(args.abstract_retrieval):
     total += 1
     data = dataset[retrieval['claim_id']]
 

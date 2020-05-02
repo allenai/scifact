@@ -1,7 +1,3 @@
-"""
-Performs document retrieval using oracle
-"""
-
 import argparse
 import jsonlines
 
@@ -16,8 +12,8 @@ output = jsonlines.open(args.output, 'w')
 
 for data in dataset:
     doc_ids = list(map(int, data['evidence'].keys()))
-    if data['label'] == 'NOT_ENOUGH_INFO' and args.include_nei:
-      doc_ids = [data['cited_doc_ids'][0]]
+    if not doc_ids and args.include_nei:
+        doc_ids = [data['cited_doc_ids'][0]]
 
     output.write({
         'claim_id': data['id'],

@@ -1,7 +1,3 @@
-"""
-Performs sentence retrieval using transformer models
-"""
-
 import argparse
 import jsonlines
 
@@ -12,19 +8,19 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer
 parser = argparse.ArgumentParser()
 parser.add_argument('--corpus', type=str, required=True)
 parser.add_argument('--dataset', type=str, required=True)
-parser.add_argument('--document-retrieval', type=str, required=True)
+parser.add_argument('--abstract-retrieval', type=str, required=True)
 parser.add_argument('--model', type=str, required=True)
-parser.add_argument('--flexk', type=str)
 parser.add_argument('--threshold', type=float, default=0.5, required=False)
-parser.add_argument('--k2', type=str)
-parser.add_argument('--k3', type=str)
-parser.add_argument('--k4', type=str)
-parser.add_argument('--k5', type=str)
+parser.add_argument('--output-flex', type=str)
+parser.add_argument('--output-k2', type=str)
+parser.add_argument('--output-k3', type=str)
+parser.add_argument('--output-k4', type=str)
+parser.add_argument('--output-k5', type=str)
 args = parser.parse_args()
 
 corpus = {doc['doc_id']: doc for doc in jsonlines.open(args.corpus)}
 dataset = jsonlines.open(args.dataset)
-document_retrieval = jsonlines.open(args.document_retrieval)
+abstract_retrieval = jsonlines.open(args.abstract_retrieval)
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Using device "{device}"')
@@ -35,7 +31,7 @@ model = AutoModelForSequenceClassification.from_pretrained(args.model).to(device
 results = []
 
 with torch.no_grad():
-    for data, retrieval in tqdm(list(zip(dataset, document_retrieval))):
+    for data, retrieval in tqdm(list(zip(dataset, abstract_retrieval))):
         assert data['id'] == retrieval['claim_id']
         claim = data['claim']
 
@@ -73,17 +69,17 @@ def output_k(output_path, k=None):
         })
 
 
-if args.flexk:
-    output_k(args.flexk)
+if args.output_flex:
+    output_k(args.output_flex)
 
-if args.k2:
-    output_k(args.k2, 2)
+if args.output_k2:
+    output_k(args.output_k2, 2)
 
-if args.k3:
-    output_k(args.k3, 3)
+if args.output_k3:
+    output_k(args.output_k3, 3)
 
-if args.k4:
-    output_k(args.k4, 4)
+if args.output_k4:
+    output_k(args.output_k4, 4)
 
-if args.k5:
-    output_k(args.k5, 5)
+if args.output_k5:
+    output_k(args.output_k5, 5)
