@@ -1,9 +1,36 @@
 ## Model Download
 
-All the model weights are stored separately using Google drive. You can download the corresponding
-model tar.gz and uncompress it in the `/models` directory
+All the model weights are stored in a public AWS S3 bucket. You can download pre-trained models using the script `script/download-model.sh`. The script usage is as follows:
 
-[Download Models](https://drive.google.com/drive/folders/1ni0dI7dhYDsKFoz6mfdEZD3ibSawq3mY?usp=sharing)
+```bash
+bash script/download-model.sh [model-component] [bert-variant] [training-dataset]
+
+# Example usage
+bash script/download-model.sh rationale roberta_large fever_scifact
+```
+
+There are two `model-compont`s:
+1. `rationale`: Identify rationale sentences.
+2. `label`: Predict label given input rationales.
+
+There are four `bert-variant`s:
+1. `roberta_base`
+2. `biomed_roberta_base`
+3. `roberta_large`.
+5. `scibert`
+
+There are four `training-dataset`s:
+1. `fever`
+2. `snopes`
+3. `scifact`
+4. `fever_scifact` (i.e. fever followed by scifact)
+
+The best-performing pipeline reported in Table 1 of the [paper](https://arxiv.org/abs/2004.14974) uses:
+- `rationale`: `roberta_large` + `fever`
+- `label`: `roberta_large` + `fever_scifact`
+
+For `fever` and `fever_scifact`, there are models available for all 4 BERT variants. For `snopes`, only `roberta_large` is available for download (but you can train your own model).
+
 
 ## Abstract Retrieval
 
