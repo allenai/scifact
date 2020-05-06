@@ -5,7 +5,7 @@
 # See `baselines.md` for more details on the available models.
 
 model_dir="model"
-mkdir -P "$model_dir"
+mkdir -p "$model_dir"
 
 base="https://ai2-s2-scifact.s3-us-west-2.amazonaws.com/release/2020-05-01/models"
 model_component=$1
