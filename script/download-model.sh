@@ -12,4 +12,10 @@ model_component=$1
 bert_variant=$2
 training_dataset=$3
 
-wget "$base/${model_component}_${bert_variant}_${training_dataset}.tar.gz" -P "$model_dir"
+model_name="${model_component}_${bert_variant}_${training_dataset}"
+# Grab the compressed version.
+wget "$base/${model_name}.tar.gz" -P "$model_dir"
+# Decompress.
+tar -xzf "$model_dir/${model_name}.tar.gz" -C "$model_dir"
+# Get rid of the tarball.
+rm "$model_dir/${model_name}.tar.gz"

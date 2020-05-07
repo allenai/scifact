@@ -6,7 +6,7 @@ All the model weights are stored in a public AWS S3 bucket. You can download pre
 bash script/download-model.sh [model-component] [bert-variant] [training-dataset]
 
 # Example usage
-bash script/download-model.sh rationale roberta_large fever_scifact
+bash script/download-model.sh rationale roberta_large scifact
 ```
 
 There are two `model-compont`s:
