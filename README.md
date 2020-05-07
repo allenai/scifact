@@ -61,7 +61,7 @@ For more details on the models, see [model-details.md](model-details.md).
 
 ## Full example
 
-See `script/full-example.sh` for a complete example showing how to download models, make predictions for all three stages of the modeling pipeline, and evaluate the full-pipeline results.
+See [script/full-example.sh](script/full-example.sh) for a complete example showing how to download models, make predictions for all three stages of the modeling pipeline, and evaluate the full-pipeline results.
 
 The evaluation metrics are out-of-date; they will updated shortly to reflect the values in Table 1 of the paper.
 
