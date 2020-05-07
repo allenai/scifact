@@ -90,7 +90,7 @@ class GoldDataset:
         self.claims = self._read_claims(data_file)
 
     def __repr__(self):
-        msg = f"{self.corpus.__repr__()} {len(self.examples)} claims."
+        msg = f"{self.corpus.__repr__()} {len(self.claims)} claims."
         return msg
 
     def __getitem__(self, i):

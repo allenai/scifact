@@ -1,4 +1,8 @@
-These schemas for the claim and corpus data are as follows:
+# Data
+
+## Gold data
+
+The schemas for the claim and corpus data are below.
 
 `claims_(train|dev|test).jsonl`
 ```

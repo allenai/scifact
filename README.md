@@ -5,10 +5,30 @@ This repository contains data and code for the paper [Fact or Fiction: Verifying
 - Project [website](https://scifact.apps.allenai.org).
 
 ## Table of contents
+- [Dependencies](#dependencies)
 - [Data](#data)
 - [Pre-trained models](#pre-trained-models)
 - [Full example](#full-example)
+- [Leaderboard](#leaderboard)
 - [Contact](#contact)
+
+
+## Dependencies
+
+We recommend you create an anaconda environment:
+```bash
+conda create --name scifact python=3.7 conda-build
+```
+Then, from the `scifact` project root, run
+```
+conda develop .
+```
+which will add the scifact code to your `PYTHONPATH`.
+
+Then, install Python requirements:
+```
+pip install -r requirements.txt
+```
 
 ## Data
 
@@ -61,9 +81,11 @@ For more details on the models, see [model-details.md](model-details.md).
 
 ## Full example
 
-See [script/full-example.sh](script/full-example.sh) for a complete example showing how to download models, make predictions for all three stages of the modeling pipeline, and evaluate the full-pipeline results.
+See [script/full-example.sh](script/full-example.sh) for a complete example showing how to download models, make predictions for all three stages of the modeling pipeline, and evaluate the full-pipeline results. This example reports results on the dev set, since the test set labels are witheld.
 
-The evaluation metrics are out-of-date; they will updated shortly to reflect the values in Table 1 of the paper.
+## Leaderboard
+
+In progress. For now, feel free to email test-set predictions to the contact below.
 
 ## Contact
 
