@@ -8,11 +8,32 @@ import copy
 from dataclasses import dataclass
 from typing import Dict, List, Tuple
 
+####################
+
+# Utility functions and enums.
+
 
 def load_jsonl(fname):
     return [json.loads(line) for line in open(fname)]
 
 
+class Label(Enum):
+    SUPPORTS = 1
+    NEI = 0
+    REFUTES = -1
+
+
+def make_label(label_str):
+    lookup = {"SUPPORT": Label.SUPPORTS,
+              "NOT_ENOUGH_INFO": Label.NEI,
+              "CONTRADICT": Label.REFUTES}
+    assert label_str in lookup
+    return lookup[label_str]
+
+
+####################
+
+# Representations for the corpus and abstracts.
 
 @dataclass(repr=False, frozen=True)
 class Document:
@@ -56,13 +77,9 @@ class Corpus:
         return res[0]
 
 
-class Label(Enum):
-    SUPPORTS = 1
-    NEI = 0
-    REFUTES = -1
+####################
 
-
-# Classes to read in and handle a release.
+# Gold dataset.
 
 class GoldDataset:
     """
@@ -197,6 +214,10 @@ class EvidenceAbstract:
     rationales: List[List[int]]
 
 
+####################
+
+# Predicted dataset.
+
 class PredictedDataset:
     """
     Class to handle predictions, with a pointer back to the gold data.
@@ -247,18 +268,11 @@ class PredictedDataset:
             else:
                 label = labels[key]
             evidence = evidences[key]
-            pred = Prediction(int(key), make_label(label["label"]), label["confidence"], evidence)
+            pred = Prediction(int(key), make_label(label["label"]),
+                              label["confidence"], evidence)
             preds[int(key)] = pred
 
         return ClaimPredictions(claim_id, preds)
-
-
-def make_label(label_str):
-    lookup = {"SUPPORT": Label.SUPPORTS,
-              "NOT_ENOUGH_INFO": Label.NEI,
-              "CONTRADICT": Label.REFUTES}
-    assert label_str in lookup
-    return lookup[label_str]
 
 
 @dataclass

@@ -1,5 +1,5 @@
 """
-Evaluating abstract-level and sentence-level performance as defined in the
+Evaluating abstract-level and sentence-level performance as desentenced in the
 paper.
 """
 
@@ -16,6 +16,8 @@ def compute_f1(counts):
 
 
 ####################
+
+# Abstract-level evaluation
 
 def contains_evidence(predicted, gold):
     # If any of gold are contained in predicted, we're good.
@@ -41,21 +43,23 @@ def is_correct(doc_id, doc_pred, gold):
     return contains_evidence(set(doc_pred.rationale), gold_rationales)
 
 
-def update_counts_coarse(pred, gold, counts_coarse):
-    counts_coarse["relevant"] += len(gold.evidence)
+def update_counts_abstract(pred, gold, counts_abstract):
+    counts_abstract["relevant"] += len(gold.evidence)
     for doc_id, doc_pred in pred.predictions.items():
         # If it's NEI, doesn't count one way or the other.
         if doc_pred.label == Label.NEI:
             continue
-        counts_coarse["retrieved"] += 1
+        counts_abstract["retrieved"] += 1
         good = is_correct(doc_id, doc_pred, gold)
         if good:
-            counts_coarse["correct"] += 1
+            counts_abstract["correct"] += 1
 
-    return counts_coarse
+    return counts_abstract
+
 
 ####################
 
+# Sentence-level evaluation
 
 def count_rationale_sents(predicted, gold):
     n_correct = 0
@@ -89,21 +93,21 @@ def count_correct(doc_id, doc_pred, gold):
     return n_correct
 
 
-def update_counts_fine(pred, gold, counts_fine):
+def update_counts_sentence(pred, gold, counts_sentence):
     # Update the gold evidence sentences.
     for gold_doc in gold.evidence.values():
-        counts_fine["relevant"] += sum([len(x) for x in gold_doc.rationales])
+        counts_sentence["relevant"] += sum([len(x) for x in gold_doc.rationales])
 
     for doc_id, doc_pred in pred.predictions.items():
         # If it's NEI, skip it.
         if doc_pred.label == Label.NEI:
             continue
 
-        counts_fine["retrieved"] += len(doc_pred.rationale)
+        counts_sentence["retrieved"] += len(doc_pred.rationale)
         n_correct = count_correct(doc_id, doc_pred, gold)
-        counts_fine["correct"] += n_correct
+        counts_sentence["correct"] += n_correct
 
-    return counts_fine
+    return counts_sentence
 
 
 ################################################################################
@@ -112,15 +116,15 @@ def compute_metrics(preds):
     """
     Compute pipeline metrics based on dataset of predictions.
     """
-    counts_coarse = Counter()
-    counts_fine = Counter()
+    counts_abstract = Counter()
+    counts_sentence = Counter()
 
     for pred in preds:
         gold = preds.gold.get_claim(pred.claim_id)
-        counts_coarse = update_counts_coarse(pred, gold, counts_coarse)
-        counts_fine = update_counts_fine(pred, gold, counts_fine)
+        counts_abstract = update_counts_abstract(pred, gold, counts_abstract)
+        counts_sentence = update_counts_sentence(pred, gold, counts_sentence)
 
-    f1_coarse = compute_f1(counts_coarse)
-    f1_fine = compute_f1(counts_fine)
+    f1_abstract = compute_f1(counts_abstract)
+    f1_sentence = compute_f1(counts_sentence)
 
-    return pd.DataFrame({"coarse": f1_coarse, "fine": f1_fine})
+    return pd.DataFrame({"abstract": f1_abstract, "sentence": f1_sentence})
