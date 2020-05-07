@@ -4,6 +4,12 @@ This repository contains data and code for the paper [Fact or Fiction: Verifying
 
 - Project [website](https://scifact.apps.allenai.org).
 
+## Table of contents
+- [Data](#data)
+- [Pre-trained models](#pre-trained-models)
+- [Full example](#full-example)
+- [Contact](#contact)
+
 ## Data
 
 To download the data from Amazon S3, invoke
