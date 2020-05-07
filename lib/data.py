@@ -88,8 +88,6 @@ class GoldDataset:
     def __init__(self, corpus_file, data_file):
         self.corpus = self._read_corpus(corpus_file)
         self.claims = self._read_claims(data_file)
-        self.cited_docs = self._get_cited_docs()
-        self.evidence_docs = self._get_evidence_docs()
 
     def __repr__(self):
         msg = f"{self.corpus.__repr__()} {len(self.examples)} claims."
@@ -124,31 +122,19 @@ class GoldDataset:
         res = sorted(res, key=lambda x: x.id)
         return res
 
-    def _get_cited_docs(self):
-        "Get cited documents in dataset."
-        all_cited_docs = []
-        for example in self.claims:
-            for cited_doc in example.cited_docs:
-                if cited_doc not in all_cited_docs:
-                    all_cited_docs.append(cited_doc)
-
-        return sorted(all_cited_docs)
-
-    def _get_evidence_docs(self):
-        "Get all evidence documents in dataset."
-        all_evidence = set()
-        for example in self.claims:
-            for key in example.evidence:
-                all_evidence.add(key)
-
-        evidence_docs = [self.corpus.get_document(id) for id in all_evidence]
-        return evidence_docs
-
     def get_claim(self, example_id):
         "Get a single claim by ID."
         keep = [x for x in self.claims if x.id == example_id]
         assert len(keep) == 1
         return keep[0]
+
+
+@dataclass
+class EvidenceAbstract:
+    "A single evidence abstract."
+    id: int
+    label: Label
+    rationales: List[List[int]]
 
 
 @dataclass(repr=False)
@@ -158,7 +144,7 @@ class Claim:
     """
     id: int
     claim: str
-    evidence: Dict
+    evidence: Dict[int, EvidenceAbstract]
     cited_docs: List[Document]
     release: GoldDataset
 
@@ -167,6 +153,11 @@ class Claim:
 
     @staticmethod
     def _format_evidence(evidence_dict):
+        # This function is needed because the data schema is designed so that
+        # each rationale can have its own support label. But, in the dataset,
+        # all rationales for a given claim / abstract pair all have the same
+        # label. So, we store the label at the "abstract level" rather than the
+        # "rationale level".
         res = {}
         for doc_id, rationales in evidence_dict.items():
             doc_id = int(doc_id)
@@ -204,14 +195,6 @@ class Claim:
                 kept = [sent for i, sent in enumerate(ev_doc.sentences) if i in sents]
                 for entry in kept:
                     print(f"\t- {entry}", file=file)
-
-
-@dataclass
-class EvidenceAbstract:
-    "A single evidence abstract."
-    id: int
-    label: Label
-    rationales: List[List[int]]
 
 
 ####################
@@ -268,15 +251,17 @@ class PredictedDataset:
             else:
                 label = labels[key]
             evidence = evidences[key]
-            pred = Prediction(int(key), make_label(label["label"]),
-                              label["confidence"], evidence)
+            pred = PredictedAbstract(int(key), make_label(label["label"]),
+                                     label["confidence"], evidence)
             preds[int(key)] = pred
 
         return ClaimPredictions(claim_id, preds)
 
 
 @dataclass
-class Prediction:
+class PredictedAbstract:
+    # For predictions, we have a single list of rationale sentences instead of a
+    # list of separate rationales (see paper for details).
     abstract_id: int
     label: Label
     confidence: float
@@ -286,4 +271,4 @@ class Prediction:
 @dataclass
 class ClaimPredictions:
     claim_id: int
-    predictions: Dict[int, Prediction]
+    predictions: Dict[int, PredictedAbstract]

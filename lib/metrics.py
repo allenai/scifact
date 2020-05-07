@@ -1,5 +1,5 @@
 """
-Evaluating abstract-level and sentence-level performance as desentenced in the
+Evaluating abstract-level and sentence-level performance as described in the
 paper.
 """
 

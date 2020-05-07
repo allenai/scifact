@@ -10,6 +10,7 @@ jmespath==0.9.5
 joblib==0.14.1
 jsonlines==1.2.0
 numpy==1.18.2
+pandas==1.0.3
 python-dateutil==2.8.1
 regex==2020.4.4
 requests==2.23.0
