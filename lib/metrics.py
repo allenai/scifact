@@ -3,7 +3,7 @@ Evaluating abstract-level and sentence-level performance as defined in the
 paper.
 """
 
-from lib.release import Label
+from lib.data import Label
 from collections import Counter
 import pandas as pd
 
@@ -116,7 +116,7 @@ def compute_metrics(preds):
     counts_fine = Counter()
 
     for pred in preds:
-        gold = preds.release.get_example(pred.claim_id)
+        gold = preds.gold.get_claim(pred.claim_id)
         counts_coarse = update_counts_coarse(pred, gold, counts_coarse)
         counts_fine = update_counts_fine(pred, gold, counts_fine)
 

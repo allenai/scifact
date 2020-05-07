@@ -13,11 +13,6 @@ def load_jsonl(fname):
     return [json.loads(line) for line in open(fname)]
 
 
-def write_jsonl(data, fname):
-    with open(fname, "w") as f:
-        for line in data:
-            print(json.dumps(line), file=f)
-
 
 @dataclass(repr=False, frozen=True)
 class Document:
@@ -69,27 +64,25 @@ class Label(Enum):
 
 # Classes to read in and handle a release.
 
-class Release:
+class GoldDataset:
     """
-    Class to represent a full release of the data.
+    Class to represent a gold dataset, include corpus and claims.
     """
     def __init__(self, corpus_file, data_file):
         self.corpus = self._read_corpus(corpus_file)
-        self.examples = self._read_examples(data_file)
-    # def __init__(self, fold_dir, corpus_file, admin_file):
-    #     self.corpus = self._read_corpus(corpus_file)
-    #     self.examples = self._read_examples(fold_dir, admin_file)
-    #     self.cited_docs = self._get_cited_docs()
-    #     self.evidence_docs = self._get_evidence_docs()
+        self.claims = self._read_claims(data_file)
+        self.cited_docs = self._get_cited_docs()
+        self.evidence_docs = self._get_evidence_docs()
 
     def __repr__(self):
         msg = f"{self.corpus.__repr__()} {len(self.examples)} claims."
         return msg
 
     def __getitem__(self, i):
-        return self.examples[i]
+        return self.claims[i]
 
     def _read_corpus(self, corpus_file):
+        "Read corpus from file."
         corpus = load_jsonl(corpus_file)
         documents = []
         for entry in corpus:
@@ -98,7 +91,8 @@ class Release:
 
         return Corpus(documents)
 
-    def _read_examples(self, data_file):
+    def _read_claims(self, data_file):
+        "Read claims from file."
         examples = load_jsonl(data_file)
         res = []
         for this_example in examples:
@@ -108,14 +102,15 @@ class Release:
                                    for doc in entry["cited_doc_ids"]]
             assert len(entry["cited_docs"]) == len(entry["cited_doc_ids"])
             del entry["cited_doc_ids"]
-            res.append(Example(**entry))
+            res.append(Claim(**entry))
 
         res = sorted(res, key=lambda x: x.id)
         return res
 
     def _get_cited_docs(self):
+        "Get cited documents in dataset."
         all_cited_docs = []
-        for example in self.examples:
+        for example in self.claims:
             for cited_doc in example.cited_docs:
                 if cited_doc not in all_cited_docs:
                     all_cited_docs.append(cited_doc)
@@ -123,27 +118,32 @@ class Release:
         return sorted(all_cited_docs)
 
     def _get_evidence_docs(self):
+        "Get all evidence documents in dataset."
         all_evidence = set()
-        for example in self.examples:
+        for example in self.claims:
             for key in example.evidence:
                 all_evidence.add(key)
 
         evidence_docs = [self.corpus.get_document(id) for id in all_evidence]
         return evidence_docs
 
-    def get_example(self, example_id):
-        keep = [x for x in self.examples if x.id == example_id]
+    def get_claim(self, example_id):
+        "Get a single claim by ID."
+        keep = [x for x in self.claims if x.id == example_id]
         assert len(keep) == 1
         return keep[0]
 
 
 @dataclass(repr=False)
-class Example:
+class Claim:
+    """
+    Class representing a single claim, with a pointer back to the dataset.
+    """
     id: int
     claim: str
     evidence: Dict
     cited_docs: List[Document]
-    release: Release
+    release: GoldDataset
 
     def __post_init__(self):
         self.evidence = self._format_evidence(self.evidence)
@@ -170,6 +170,7 @@ class Example:
         return msg
 
     def pretty_print(self, evidence_doc_id=None, file=None):
+        "Pretty-print the claim, together with all evidence."
         msg = self.__repr__()
         print(msg, file=file)
         # Print the evidence
@@ -190,6 +191,7 @@ class Example:
 
 @dataclass
 class EvidenceAbstract:
+    "A single evidence abstract."
     id: int
     label: Label
     rationales: List[List[int]]
@@ -197,14 +199,15 @@ class EvidenceAbstract:
 
 class PredictedDataset:
     """
-    Class to handle predictions.
+    Class to handle predictions, with a pointer back to the gold data.
     """
-    def __init__(self, release, rationale_file, entailment_file):
+    def __init__(self, gold, rationale_file, label_file):
         """
-        A prediction is linked to a data release.
+        Takes a GoldDataset, as well as files with rationale and label
+        predictions.
         """
-        self.release = release
-        self.predictions = self._read_predictions(rationale_file, entailment_file)
+        self.gold = gold
+        self.predictions = self._read_predictions(rationale_file, label_file)
 
     def __getitem__(self, i):
         return self.predictions[i]
@@ -213,22 +216,22 @@ class PredictedDataset:
         msg = f"Predictions for {len(self.predictions)} claims."
         return msg
 
-    def _read_predictions(self, rationale_file, entailment_file):
+    def _read_predictions(self, rationale_file, label_file):
         predictions = []
 
         rationales = load_jsonl(rationale_file)
-        entailments = load_jsonl(entailment_file)
-        for rationale, entailment in zip(rationales, entailments):
-            prediction = self._parse_prediction(rationale, entailment)
+        labels = load_jsonl(label_file)
+        for rationale, label in zip(rationales, labels):
+            prediction = self._parse_prediction(rationale, label)
             predictions.append(prediction)
 
         return predictions
 
-    def _parse_prediction(self, rationale, entailment):
-        assert rationale["claim_id"] == entailment["claim_id"]
+    def _parse_prediction(self, rationale, label):
+        assert rationale["claim_id"] == label["claim_id"]
         claim_id = rationale["claim_id"]
         evidences = rationale["evidence"]
-        labels = entailment["labels"]
+        labels = label["labels"]
 
         # Make sure all the keys in labels are in evidences.
         label_keys = set(labels.keys())
