@@ -24,6 +24,10 @@ The pre-trained models described in the preprint are available for download from
 
 We will add an evaluation script shortly.
 
+## Training scripts
+
+See [training.md](training.md).
+
 ## Contact
 
 Email: `davidw@allenai.org`.
