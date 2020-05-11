@@ -5,9 +5,7 @@ import random
 import os
 
 from torch.utils.data import Dataset, DataLoader
-# If you are training non-roberta based model, manually change the import to corresponding class,
-# such as BertForSequenceClassification
-from transformers import RobertaForSequenceClassification, AutoTokenizer, get_cosine_schedule_with_warmup
+from transformers import AutoConfig, AutoTokenizer, AutoModelForSequenceClassification, get_cosine_schedule_with_warmup
 from tqdm import tqdm
 from typing import List
 from sklearn.metrics import f1_score, precision_score, recall_score
@@ -73,7 +71,8 @@ trainset = FeverLabelPredictionDataset(args.train)
 devset = FeverLabelPredictionDataset(args.dev)
 
 tokenizer = AutoTokenizer.from_pretrained(args.model)
-model = RobertaForSequenceClassification.from_pretrained(args.model, num_labels=3).to(device)
+config = AutoConfig.from_pretrained(args.model, num_labels=3)
+model = AutoModelForSequenceClassification.from_pretrained(args.model, config=config).to(device)
 optimizer = torch.optim.Adam([
     # If you are using non-roberta based models, change this to point to the right base
     {'params': model.roberta.parameters(), 'lr': args.lr_base},

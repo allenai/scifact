@@ -2,7 +2,7 @@ import argparse
 import jsonlines
 
 import torch
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from transformers import AutoConfig, AutoTokenizer, AutoModelForSequenceClassification
 from tqdm import tqdm
 
 parser = argparse.ArgumentParser()
@@ -22,7 +22,8 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Using device "{device}"')
 
 tokenizer = AutoTokenizer.from_pretrained(args.model)
-model = AutoModelForSequenceClassification.from_pretrained(args.model).eval().to(device)
+config = AutoConfig.from_pretrained(args.model, num_labels=3)
+model = AutoModelForSequenceClassification.from_pretrained(args.model, config=config).eval().to(device)
 
 LABELS = ['CONTRADICT', 'NOT_ENOUGH_INFO', 'SUPPORT']
 

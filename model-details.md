@@ -143,7 +143,7 @@ Download models with prefix: `nli` for label prediction module.
 ```sh
 python label_prediction/evaluate.py \
     --corpus data/corpus.jsonl \
-    --dataset data/claim_dev.jsonl \
+    --dataset data/claims_dev.jsonl \
     --label-prediction label_prediction.jsonl
 ```
 
