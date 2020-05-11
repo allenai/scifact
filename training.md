@@ -2,7 +2,13 @@
 
 All the training scripts are located in the `/training` folder
 
-## Common arguments
+- [Common Arguments](#common-arguments)
+- [Training on SciFact](#training-on-scifact-dataset)
+- [Training on FEVER](#training-on-fever-dataset)
+- [Training on FEVER + SciFact](#training-on-fever--scifact-dataset)
+- [Training on Snopes](#training-on-snopes-dataset)
+
+## Common Arguments
 
 * `--model`: Model argument allows you to select what pretrained model to use.
              Options include `roberta-base`, `roberta-large`, `allenai/scifact_scivocab_uncased`, `allenai/biomed_roberta_base`, and `PATH TO CHECKPOINT`.
@@ -36,7 +42,7 @@ python label_prediction_scifact_train.py \
 ```
 
 
-## Training on Fever Dataset
+## Training on FEVER Dataset
 You will need to download Fever dataset and Wiki Dump manually
 ```shell script
 # Download Fever dataset:
@@ -76,6 +82,11 @@ python label_prediction_fever_train.py \
     --dest "PATH TO WEIGHT SAVING FOLDER"
 ```
 
+
+## Training on FEVER + SciFact Dataset
+Simply train the model using the Fever script and then using the SciFact script.
+When using the SciFact script, chagne the `--model` argument to the saved weights produced by the 
+fever script.
 
 ## Training on Snopes Dataset
 You will need to acquire Snopes dataset yourself.

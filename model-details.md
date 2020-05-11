@@ -1,35 +1,13 @@
-## Model Download
+# Models
 
-All the model weights are stored in a public AWS S3 bucket. You can download pre-trained models using the script `script/download-model.sh`. The script usage is as follows:
+As described in the paper, the model consists of three pipeline components: abstract retrieval, rationale selection, and label prediction. We also run "oracle" experiments where pipeline components are replaced with oracles that always make correct predictions given correct outputs; these are shown in Table 1. Table 2 shows evaluations of individual model components. The examples below show how to make oracle and model predictions, evaluate each pipeline component.
 
-```bash
-bash script/download-model.sh [model-component] [bert-variant] [training-dataset]
+## Outline
 
-# Example usage
-bash script/download-model.sh rationale roberta_large scifact
-```
-
-There are two `model-compont`s:
-1. `rationale`: Identify rationale sentences.
-2. `label`: Predict label given input rationales.
-
-There are four `bert-variant`s:
-1. `roberta_base`
-2. `biomed_roberta_base`
-3. `roberta_large`.
-5. `scibert`
-
-There are four `training-dataset`s:
-1. `fever`
-2. `snopes`
-3. `scifact`
-4. `fever_scifact` (i.e. fever followed by scifact)
-
-The best-performing pipeline reported in Table 1 of the [paper](https://arxiv.org/abs/2004.14974) uses:
-- `rationale`: `roberta_large` + `fever`
-- `label`: `roberta_large` + `fever_scifact`
-
-For `fever` and `fever_scifact`, there are models available for all 4 BERT variants. For `snopes`, only `roberta_large` is available for download (but you can train your own model).
+- [Abstract Retrieval](#abstract-retrieval)
+- [Rationale Selection](#rationale-selection)
+- [Label Prediction](#label-prediction)
+- [Full pipeline](#full-pipeline)
 
 
 ## Abstract Retrieval
@@ -171,12 +149,13 @@ python label_prediction/evaluate.py \
 
 -------------------------------------------------------
 
-## Pipeline
+## Full Pipeline
 
 #### Evaluate
 ```sh
-python pipeline/evaluate.py \
-    --dataset data/claim_dev.jsonl \
-    --rationale-selection rationale_selection.jsonl \
-    --label-prediction label_prediction.jsonl
+python pipeline/evaluate_paper_metrics.py \
+    --dataset data/claims_dev.jsonl \
+    --corpus data/corpus.jsonl \
+    --rationale-selection prediction/rationale_selection.jsonl \
+    --label-prediction prediction/label_prediction.jsonl
 ```

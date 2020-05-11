@@ -13,6 +13,14 @@ bert_variant=$2
 training_dataset=$3
 
 model_name="${model_component}_${bert_variant}_${training_dataset}"
+
+# If the file already exists, don't download again.
+if [ -e model/$model_name ]
+then
+    echo "Output directory $model_name already exists."
+    exit 0
+fi
+
 # Grab the compressed version.
 wget "$base/${model_name}.tar.gz" -P "$model_dir"
 # Decompress.
