@@ -12,6 +12,11 @@ bash script/download-model.sh label roberta_large fever_scifact
 
 ####################
 
+# Create a prediction folder to store results.
+mkdir prediction
+
+####################
+
 # Run abstract retrieval.
 echo; echo "Retrieving abstracts."
 python abstract_retrieval/tfidf.py \
