@@ -1,5 +1,5 @@
 __pycache__*
-model/*
-data/*
-prediction/*
-scratch*
+**/model/*
+**/data/*
+**/prediction/*
+**/scratch/*
