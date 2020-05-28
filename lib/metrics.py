@@ -3,9 +3,15 @@ Evaluating abstract-level and sentence-level performance as described in the
 paper.
 """
 
+import warnings
+
 from lib.data import Label
 from collections import Counter
 import pandas as pd
+
+
+# Cap on how many abstract sentences can be returned.
+MAX_ABSTRACT_SENTS = 3
 
 
 def compute_f1(counts):
@@ -29,6 +35,8 @@ def contains_evidence(predicted, gold):
 
 
 def is_correct(doc_id, doc_pred, gold):
+    pred_rationales = doc_pred.rationale[:MAX_ABSTRACT_SENTS]
+
     # If it's not an evidence document, we lose.
     if doc_id not in gold.evidence:
         return False
@@ -40,7 +48,7 @@ def is_correct(doc_id, doc_pred, gold):
 
     gold_rationales = [set(x) for x in gold.evidence[doc_id].rationales]
     # Otherwise, we win if it's got an evidence set.
-    return contains_evidence(set(doc_pred.rationale), gold_rationales)
+    return contains_evidence(set(pred_rationales), gold_rationales)
 
 
 def update_counts_abstract(pred, gold, counts_abstract):
@@ -110,6 +118,30 @@ def update_counts_sentence(pred, gold, counts_sentence):
     return counts_sentence
 
 
+####################
+
+# Make sure rationales aren't too long.
+
+def check_rationale_lengths(preds):
+    bad = []
+    for pred in preds:
+        claim_id = pred.claim_id
+        predictions = pred.predictions
+        for doc_key, prediction in predictions.items():
+            n_rationales = len(prediction.rationale)
+            if n_rationales > MAX_ABSTRACT_SENTS:
+                to_append = {"claim_id": claim_id, "abstract": doc_key, "n_rationales": n_rationales}
+                bad.append(to_append)
+    if bad:
+        bad = pd.DataFrame(bad)
+        msg = (f"\nRationales with more than {MAX_ABSTRACT_SENTS} sentences found.\n"
+               f"The first 3 will be used for abstract-level evaluation\n\n"
+               f"{bad.__repr__()}")
+        warnings.warn(msg)
+        print()
+
+
+
 ################################################################################
 
 def compute_metrics(preds):
@@ -118,6 +150,8 @@ def compute_metrics(preds):
     """
     counts_abstract = Counter()
     counts_sentence = Counter()
+
+    check_rationale_lengths(preds)
 
     for pred in preds:
         gold = preds.gold.get_claim(pred.claim_id)
