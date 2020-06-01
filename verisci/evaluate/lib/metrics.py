@@ -14,9 +14,9 @@ import pandas as pd
 MAX_ABSTRACT_SENTS = 3
 
 
-def compute_f1(counts):
-    precision = counts["correct"] / counts["retrieved"]
-    recall = counts["correct"] / counts["relevant"]
+def compute_f1(counts, difficulty):
+    precision = counts[f"correct_{difficulty}"] / counts["retrieved"]
+    recall = counts[f"correct_{difficulty}"] / counts["relevant"]
     f1 = (2 * precision * recall) / (precision + recall)
     return {"precision": precision, "recall": recall, "f1": f1}
 
@@ -39,16 +39,17 @@ def is_correct(doc_id, doc_pred, gold):
 
     # If it's not an evidence document, we lose.
     if doc_id not in gold.evidence:
-        return False
+        return False, False
 
     # If the label's wrong, we lose.
     gold_label = gold.evidence[doc_id].label
     if doc_pred.label != gold_label:
-        return False
+        return False, False
 
     gold_rationales = [set(x) for x in gold.evidence[doc_id].rationales]
-    # Otherwise, we win if it's got an evidence set.
-    return contains_evidence(set(pred_rationales), gold_rationales)
+    good_rationalized = contains_evidence(set(pred_rationales), gold_rationales)
+    good_label_only = True
+    return good_label_only, good_rationalized
 
 
 def update_counts_abstract(pred, gold, counts_abstract):
@@ -58,9 +59,12 @@ def update_counts_abstract(pred, gold, counts_abstract):
         if doc_pred.label == Label.NEI:
             continue
         counts_abstract["retrieved"] += 1
-        good = is_correct(doc_id, doc_pred, gold)
-        if good:
-            counts_abstract["correct"] += 1
+
+        good_label_only, good_rationalized = is_correct(doc_id, doc_pred, gold)
+        if good_label_only:
+            counts_abstract["correct_label_only"] += 1
+        if good_rationalized:
+            counts_abstract["correct_rationalized"] += 1
 
     return counts_abstract
 
@@ -89,16 +93,19 @@ def count_rationale_sents(predicted, gold):
 def count_correct(doc_id, doc_pred, gold):
     # If not an evidence doc, no good.
     if doc_id not in gold.evidence:
-        return 0
-    # If label is wrong, no good.
-    gold_label = gold.evidence[doc_id].label
-    if doc_pred.label != gold_label:
-        return 0
+        return 0, 0
 
     # Count the number of rationale sentences we get credit for.
     gold_rationales = [set(x) for x in gold.evidence[doc_id].rationales]
     n_correct = count_rationale_sents(set(doc_pred.rationale), gold_rationales)
-    return n_correct
+
+    gold_label = gold.evidence[doc_id].label
+
+    n_correct_selection = n_correct
+    correct_label = int(doc_pred.label == gold_label)
+    n_correct_label = correct_label * n_correct
+
+    return n_correct_selection, n_correct_label
 
 
 def update_counts_sentence(pred, gold, counts_sentence):
@@ -112,8 +119,9 @@ def update_counts_sentence(pred, gold, counts_sentence):
             continue
 
         counts_sentence["retrieved"] += len(doc_pred.rationale)
-        n_correct = count_correct(doc_id, doc_pred, gold)
-        counts_sentence["correct"] += n_correct
+        n_correct_selection, n_correct_label = count_correct(doc_id, doc_pred, gold)
+        counts_sentence["correct_selection"] += n_correct_selection
+        counts_sentence["correct_label"] += n_correct_label
 
     return counts_sentence
 
@@ -141,7 +149,6 @@ def check_rationale_lengths(preds):
         print()
 
 
-
 ################################################################################
 
 def compute_metrics(preds):
@@ -158,7 +165,8 @@ def compute_metrics(preds):
         counts_abstract = update_counts_abstract(pred, gold, counts_abstract)
         counts_sentence = update_counts_sentence(pred, gold, counts_sentence)
 
-    f1_abstract = compute_f1(counts_abstract)
-    f1_sentence = compute_f1(counts_sentence)
-
-    return pd.DataFrame({"abstract": f1_abstract, "sentence": f1_sentence})
+    return pd.DataFrame(
+        {"abstract_label_only": compute_f1(counts_abstract, "label_only"),
+         "abstract_rationalied": compute_f1(counts_abstract, "rationalized"),
+         "sentence_selection": compute_f1(counts_sentence, "selection"),
+         "sentence_label": compute_f1(counts_sentence, "label")})
