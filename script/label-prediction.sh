@@ -53,10 +53,10 @@ python3 verisci/inference/rationale_selection/oracle_tfidf.py \
 # Run label prediction
 echo; echo "Predicting labels."
 
-if [ training_dataset = "scifact_only_claim" ]
+if [ $training_dataset = "scifact_only_claim" ]
 then
     mode="only_claim"
-elif [ training_dataset = "scifact_only_rationale" ]
+elif [ $training_dataset = "scifact_only_rationale" ]
 then
     mode="only_rationale"
 else
