@@ -37,8 +37,11 @@ for data, prediction in zip(dataset, label_prediction):
         pred_labels.append(LABELS[pred_label])
         true_labels.append(LABELS[true_label])
 
+print(f'Accuracy           {round(sum([pred_labels[i] == true_labels[i] for i in range(len(pred_labels))]) / len(pred_labels), 4)}')
 print(f'Macro F1:          {f1_score(true_labels, pred_labels, average="macro").round(4)}')
 print(f'Macro F1 w/o NEI:  {f1_score(true_labels, pred_labels, average="macro", labels=[0, 2]).round(4)}')
+print()
+print('                   [C      N      S     ]')
 print(f'F1:                {f1_score(true_labels, pred_labels, average=None).round(4)}')
 print(f'Precision:         {precision_score(true_labels, pred_labels, average=None).round(4)}')
 print(f'Recall:            {recall_score(true_labels, pred_labels, average=None).round(4)}')
