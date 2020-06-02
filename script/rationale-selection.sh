@@ -41,12 +41,15 @@ python3 verisci/inference/abstract_retrieval/oracle.py \
 
 # Run rationale selection, using the retrieved oracle abstracts. Use `flex` selection,
 # which selects any rationale with a score >= 0.5
+[ $training_dataset = "scifact_only_rationale" ] && only_rationale="--only-rationale" || only_rationale=""
+
 echo; echo "Selecting rationales."
 python3 verisci/inference/rationale_selection/transformer.py \
     --corpus data/corpus.jsonl \
     --dataset data/claims_${dataset}.jsonl \
     --abstract-retrieval prediction/abstract_retrieval.jsonl \
     --model model/rationale_${bert_variant}_${training_dataset}/ \
+    ${only_rationale} \
     --output-flex prediction/rationale_selection.jsonl
 
 ####################

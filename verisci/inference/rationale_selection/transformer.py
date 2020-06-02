@@ -11,6 +11,7 @@ parser.add_argument('--dataset', type=str, required=True)
 parser.add_argument('--abstract-retrieval', type=str, required=True)
 parser.add_argument('--model', type=str, required=True)
 parser.add_argument('--threshold', type=float, default=0.5, required=False)
+parser.add_argument('--only-rationale', action='store_true')
 parser.add_argument('--output-flex', type=str)
 parser.add_argument('--output-k2', type=str)
 parser.add_argument('--output-k3', type=str)
@@ -41,7 +42,8 @@ with torch.no_grad():
             sentences = doc['abstract']
 
             encoded_dict = tokenizer.batch_encode_plus(
-                zip(sentences, [claim] * len(sentences)),
+                # zip(sentences, [claim] * len(sentences)) if not args.only_rationale else sentences,
+                sentences,
                 pad_to_max_length=True,
                 return_tensors='pt'
             )

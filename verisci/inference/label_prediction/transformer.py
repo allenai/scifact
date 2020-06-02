@@ -10,6 +10,7 @@ parser.add_argument('--corpus', type=str, required=True)
 parser.add_argument('--dataset', type=str, required=True)
 parser.add_argument('--model', type=str, required=True)
 parser.add_argument('--rationale-selection', type=str, required=True)
+parser.add_argument('--mode', type=str, default='claim_and_rationale', choices=['claim_and_rationale', 'only_claim', 'only_rationale'])
 parser.add_argument('--output', type=str, required=True)
 args = parser.parse_args()
 
@@ -29,14 +30,19 @@ LABELS = ['CONTRADICT', 'NOT_ENOUGH_INFO', 'SUPPORT']
 
 
 def encode(sentences, claims):
+    text = {
+        "claim_and_rationale": zip(sentences, claims),
+        "only_claim": claims,
+        "only_rationale": sentences
+    }[args.mode]
     encoded_dict = tokenizer.batch_encode_plus(
-      zip(sentences, claims),
+      text,
       pad_to_max_length=True,
       return_tensors='pt'
     )
     if encoded_dict['input_ids'].size(1) > 512:
         encoded_dict = tokenizer.batch_encode_plus(
-          zip(sentences, claims),
+          text,
           max_length=512,
           pad_to_max_length=True,
           truncation_strategy='only_first',

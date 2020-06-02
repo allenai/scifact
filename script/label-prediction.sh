@@ -52,11 +52,23 @@ python3 verisci/inference/rationale_selection/oracle_tfidf.py \
 
 # Run label prediction
 echo; echo "Predicting labels."
+
+if [ training_dataset = "scifact_only_claim" ]
+then
+    mode="only_claim"
+elif [ training_dataset = "scifact_only_rationale" ]
+then
+    mode="only_rationale"
+else
+    mode="claim_and_rationale"
+fi
+
 python3 verisci/inference/label_prediction/transformer.py \
     --corpus data/corpus.jsonl \
     --dataset data/claims_${dataset}.jsonl \
     --rationale-selection prediction/rationale_selection.jsonl \
     --model model/label_${bert_variant}_${training_dataset} \
+    --mode ${mode} \
     --output prediction/label_prediction.jsonl
 
 ####################
