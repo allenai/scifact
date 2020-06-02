@@ -6,9 +6,9 @@ This repository contains data and code for the paper [Fact or Fiction: Verifying
 
 ## Table of contents
 - [Dependencies](#dependencies)
-- [Data](#data)
-- [Pre-trained models](#pre-trained-models)
-- [Full example](#full-example)
+- [Run models for paper metrics](#run-models-for-paper-metrics)
+- [Download data set](#download-data-set)
+- [Download pre-trained models](#download-pre-trained-models)
 - [Training scripts](#training-scripts)
 - [Leaderboard](#leaderboard)
 - [Contact](#contact)
@@ -31,58 +31,65 @@ Then, install Python requirements:
 pip install -r requirements.txt
 ```
 
-## Data
+## Run models for paper metrics
 
-To download the data from Amazon S3, invoke
+We provide scripts let you easily run our models and re-create the metrics published in paper. The script will
+automatically download dataset and pre-trained models.
+
+To recreate table 3 rationale selection metrics:
 ```bash
-bash script/download-data.sh
+./script/rationale-selection.sh [bert-variant] [training-dataset] [dataset]
 ```
-The data will be downloaded and stored in the `data` directory.
-
-Or, [click here](https://ai2-s2-scifact.s3-us-west-2.amazonaws.com/release/2020-05-01/data.tar.gz) to download the tarball.
-
-The claims are split into `claims_train.jsonl`, `claims_dev.jsonl`, and `claims_test.jsonl`, one claim per line. The labels are removed for the test set. The corpus of evidence documents is `corpus.jsonl`, one evidence document per line. See [data.md](data.md) for descriptions of the schemas for each file type.
-
-## Pre-trained models
-
-All "BERT-to-BERT"-style models as described in the paper are stored in a public AWS S3 bucket. You can download the models models using the script `script/download-model.sh`. The script usage is as follows:
-
+To recreate table 3 label prediction metrics:
 ```bash
-bash script/download-model.sh [model-component] [bert-variant] [training-dataset]
-
-# Example usage
-bash script/download-model.sh rationale roberta_large scifact
+./script/label-prediction.sh [bert-variant] [training-dataset] [dataset]
 ```
+- `[bert-variant]` options: `roberta_large`, `roberta_base`, `scibert`, `biomed_roberta_base`
+- `[training-dataset]` options: `scifact`, `scifact_only_claim`, `scifact_only_rationale`, `fever_scifact`, `fever`, `snopes`
+- `[dataset]` options: `dev`, `test`
+
+To recreate table 4:
+```bash
+./script/pipeline.sh [retrieval] [model] [dataset]
+```
+- `[retrieval]` options: `oracle`, `open`
+- `[model]` options: `oracle-rationle`, `zero-shot`, `verisci`
+- `[dataset]` options: `dev`, `test`
+
+## Download data set
+
+Download with script: The data will be downloaded and stored in the `data` directory.
+```bash
+./script/download-data.sh
+```
+Or, [click here](https://scifact.s3-us-west-2.amazonaws.com/release/2020-05-01/data.tar.gz) to download the tarball.
+
+The claims are split into `claims_train.jsonl`, `claims_dev.jsonl`, and `claims_test.jsonl`, one claim per line. The
+labels are removed for the test set. The corpus of evidence documents is `corpus.jsonl`, one evidence document per line.
+See [data.md](doc/data.md) for descriptions of the schemas for each file type.
+
+## Download pre-trained models
+
+All "BERT-to-BERT"-style models as described in the paper are stored in a public AWS S3 bucket. You can download the
+models models using the script:
+```bash
+./script/download-model.sh [model-component] [bert-variant] [training-dataset]
+```
+- `[model-component]` options: `rationale`, `label`
+- `[bert-variant]` options: `roberta_large`, `roberta_base`, `scibert`, `biomed_roberta_base`
+- `[training-dataset]` options: `scifact`, `scifact_only_claim`, `scifact_only_rationale`, `fever_scifact`, `fever`, `snopes`
 
 The script checks to make sure the downloaded model doesn't already exist before starting new downloads.
 
-There are two `model-component`s:
-1. `rationale`: Identify rationale sentences.
-2. `label`: Predict label given input rationales.
-
-There are four `bert-variant`s:
-1. `roberta_base`
-2. `biomed_roberta_base`
-3. `roberta_large`.
-5. `scibert`
-
-There are four `training-dataset`s:
-1. `fever`
-2. `snopes`
-3. `scifact`
-4. `fever_scifact` (i.e. fever followed by scifact)
-
-The best-performing pipeline reported in Table 1 of the [paper](https://arxiv.org/abs/2004.14974) uses:
-- `rationale`: `roberta_large` + `fever`
+The best-performing pipeline reported in [paper](https://arxiv.org/abs/2004.14974) uses:
+- `rationale`: `roberta_large` + `scifact`
 - `label`: `roberta_large` + `fever_scifact`
 
-For `fever` and `fever_scifact`, there are models available for all 4 BERT variants. For `snopes`, only `roberta_large` is available for download (but you can train your own model).
+For `fever` and `fever_scifact`, there are models available for all 4 BERT variants. For `snopes`, only `roberta_large`
+is available for download (but you can train your own model).
 
-For more details on the models, see [model-details.md](model-details.md).
-
-## Full example
-
-See [script/full-example.sh](script/full-example.sh) for a complete example showing how to download models, make predictions for all three stages of the modeling pipeline, and evaluate the full-pipeline results. This example reports results on the dev set, since the test set labels are witheld.
+After downloading the pretrained-model, you can follow instruction [model.md](doc/model.md) to 
+run individual model components.
 
 ## Training scripts
 

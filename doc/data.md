@@ -1,6 +1,6 @@
 # Data
 
-The data formats and code used to visualize and work with the data are described below. Documentation on the format for predictions is not yet included; for now, just run `script/full-example.sh` and examine the outputs dumped to the `prediction` directory.
+The data formats and code used to visualize and work with the data are described below.
 
 ## Outline
 
