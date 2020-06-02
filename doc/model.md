@@ -1,6 +1,10 @@
 # Models
 
-As described in the paper, the model consists of three pipeline components: abstract retrieval, rationale selection, and label prediction. We also run "oracle" experiments where pipeline components are replaced with oracles that always make correct predictions given correct outputs; these are shown in Table 1. Table 2 shows evaluations of individual model components. The examples below show how to make oracle and model predictions, evaluate each pipeline component.
+As described in the paper, the model consists of three pipeline components:
+abstract retrieval, rationale selection, and label prediction. We also run
+"oracle" experiments where pipeline components are replaced with oracles that
+always make correct predictions given correct outputs. The examples below
+show how to make oracle and model predictions, evaluate each pipeline component.
 
 ## Outline
 
@@ -14,7 +18,7 @@ As described in the paper, the model consists of three pipeline components: abst
 
 #### Oracle
 ```sh
-python abstract_retrieval/oracle.py \
+python verisci/inference/abstract_retrieval/oracle.py \
     --dataset data/claims_dev.jsonl \
     --output abstract_retrieval.jsonl
 ```
@@ -23,7 +27,7 @@ Additional args:
 
 #### TF-IDF
 ```sh
-python abstract_retrieval/tfidf.py \
+python verisci/inference/abstract_retrieval/tfidf.py \
     --corpus data/corpus.jsonl \
     --dataset data/claims_dev.jsonl \
     --k 3 \
@@ -34,7 +38,7 @@ python abstract_retrieval/tfidf.py \
 
 #### Evaluate
 ```sh
-python abstract_retrieval/evaluate.py \
+python verisci/evalaute/abstract_retrieval.py \
     --dataset data/claims_test.jsonl \
     --abstract-retrieval abstract_retrieval.jsonl
 ```
@@ -45,7 +49,7 @@ python abstract_retrieval/evaluate.py \
 
 #### Oracle
 ```sh
-python rationale_selection/oracle.py \
+python verisci/inference/rationale_selection/oracle.py \
     --dataset data/claims_dev.jsonl \
     --abstract-retrieval abstract_retrieval.jsonl \
     --output rationale_selection.jsonl
@@ -54,7 +58,7 @@ python rationale_selection/oracle.py \
 #### Oracle + TF-IDF
 Use oracle if gold rationale for that document is present, otherwise use tfidf.
 ```sh
-python rationale_selection/oracle_tfidf.py \
+python verisci/inference/rationale_selection/oracle_tfidf.py \
     --corpus data/corpus.jsonl \
     --dataset data/claims_dev.jsonl \
     --abstract-retrieval abstract_retrieval.jsonl \
@@ -63,14 +67,14 @@ python rationale_selection/oracle_tfidf.py \
 
 #### First Sentence
 ```sh
-python rationale_selection/first.py \
+python verisci/inference/rationale_selection/first.py \
     --abstract-retrieval abstract_retrieval.jsonl \
     --output rationale_selection.jsonl
 ```
 
 #### Last Sentence
 ```sh
-python rationale_selection/last.py \
+python verisci/inference/rationale_selection/last.py \
     --corpus data/corpus.jsonl \
     --abstract-retrieval abstract_retrieval.jsonl \
     --output rationale_selection.jsonl
@@ -78,7 +82,7 @@ python rationale_selection/last.py \
 
 #### TF-IDF
 ```sh
-python rationale_selection/tfidf.py \
+python verisci/inference/rationale_selection/tfidf.py \
     --corpus data/corpus.jsonl \
     --dataset data/claims_dev.jsonl \
     --abstract-retrieval abstract_retrieval.jsonl \
@@ -90,7 +94,7 @@ python rationale_selection/tfidf.py \
 
 #### Transformer
 ```sh
-python rationale_selection/transformer.py \
+python verisci/inference/rationale_selection/transformer.py \
     --corpus data/corpus.jsonl \
     --dataset data/claims_dev.jsonl \
     --abstract-retrieval abstract_retrieval.jsonl \
@@ -103,13 +107,12 @@ python rationale_selection/transformer.py \
 ```
 Additional args:
 * `--threshold` (default: 0.5) the threshold for flex output
-* `--output-k?` and `--output-flex` are optional. Only provide if you need them.
-
-Download models with prefix: `sentence_retrieval` for rationale selection module.
+* `--only-rationale` only pass abstract sentences to the model without claim
+* `--output-*` are optional. Only provide them if you need them.
 
 #### Evaluate
 ```sh
-python rationale_selection/evaluate.py \
+python verisci/evaluate/rationale_selection.py \
     --corpus data/corpus.jsonl \
     --dataset data/claims_dev.jsonl \
     --rationale-selection rationale_selection.jsonl
@@ -121,7 +124,7 @@ python rationale_selection/evaluate.py \
 
 #### Oracle
 ```sh
-python label_prediction/oracle.py \
+python verisci/inference/label_prediction/oracle.py \
     --dataset data/claims_dev.jsonl \
     --rationale-selection rationale_selection.jsonl \
     --output label_prediction.jsonl
@@ -129,19 +132,18 @@ python label_prediction/oracle.py \
 
 #### Transformers
 ```sh
-python label_prediction/transformer.py \
+python verisci/inference/label_prediction/transformer.py \
     --corpus data/corpus.jsonl \
     --dataset data/claims_dev.jsonl \
     --rationale-selection rationale_selection.jsonl \
     --model PATH_TO_MODEL \
     --output label_prediction.jsonl
 ```
-
-Download models with prefix: `nli` for label prediction module.
+* `--mode` dictates what to pass in the model, options: `claims_and_rationale` (default), `only_claim`, `only_rationale`
 
 #### Evaluate
 ```sh
-python label_prediction/evaluate.py \
+python verisci/evaluate/label_prediction.py \
     --corpus data/corpus.jsonl \
     --dataset data/claims_dev.jsonl \
     --label-prediction label_prediction.jsonl
@@ -153,7 +155,7 @@ python label_prediction/evaluate.py \
 
 #### Evaluate
 ```sh
-python pipeline/evaluate_paper_metrics.py \
+python verisci/evaluate/pipeline.py \
     --dataset data/claims_dev.jsonl \
     --corpus data/corpus.jsonl \
     --rationale-selection prediction/rationale_selection.jsonl \

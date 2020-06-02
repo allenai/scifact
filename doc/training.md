@@ -1,6 +1,6 @@
 # Training Scripts
 
-All the training scripts are located in the `/training` folder
+All the training scripts are located in the `/verisci/training` folder
 
 - [Common Arguments](#common-arguments)
 - [Training on SciFact](#training-on-scifact-dataset)
