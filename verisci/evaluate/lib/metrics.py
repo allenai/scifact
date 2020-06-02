@@ -14,9 +14,10 @@ import pandas as pd
 MAX_ABSTRACT_SENTS = 3
 
 
-def compute_f1(counts, difficulty):
-    precision = counts[f"correct_{difficulty}"] / counts["retrieved"]
-    recall = counts[f"correct_{difficulty}"] / counts["relevant"]
+def compute_f1(counts, difficulty=None):
+    correct_key = "correct" if difficulty is None else f"correct_{difficulty}"
+    precision = counts[correct_key] / counts["retrieved"]
+    recall = counts[correct_key] / counts["relevant"]
     f1 = (2 * precision * recall) / (precision + recall)
     return {"precision": precision, "recall": recall, "f1": f1}
 
