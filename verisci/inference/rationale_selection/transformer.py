@@ -42,8 +42,7 @@ with torch.no_grad():
             sentences = doc['abstract']
 
             encoded_dict = tokenizer.batch_encode_plus(
-                # zip(sentences, [claim] * len(sentences)) if not args.only_rationale else sentences,
-                sentences,
+                zip(sentences, [claim] * len(sentences)) if not args.only_rationale else sentences,
                 pad_to_max_length=True,
                 return_tensors='pt'
             )
