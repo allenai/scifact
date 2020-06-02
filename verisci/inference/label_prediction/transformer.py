@@ -14,6 +14,8 @@ parser.add_argument('--mode', type=str, default='claim_and_rationale', choices=[
 parser.add_argument('--output', type=str, required=True)
 args = parser.parse_args()
 
+print(args.mode)
+
 corpus = {doc['doc_id']: doc for doc in jsonlines.open(args.corpus)}
 dataset = jsonlines.open(args.dataset)
 rationale_selection = jsonlines.open(args.rationale_selection)
@@ -28,25 +30,24 @@ model = AutoModelForSequenceClassification.from_pretrained(args.model, config=co
 
 LABELS = ['CONTRADICT', 'NOT_ENOUGH_INFO', 'SUPPORT']
 
-
 def encode(sentences, claims):
     text = {
-        "claim_and_rationale": zip(sentences, claims),
+        "claim_and_rationale": list(zip(sentences, claims)),
         "only_claim": claims,
         "only_rationale": sentences
     }[args.mode]
     encoded_dict = tokenizer.batch_encode_plus(
-      text,
-      pad_to_max_length=True,
-      return_tensors='pt'
+        text,
+        pad_to_max_length=True,
+        return_tensors='pt'
     )
     if encoded_dict['input_ids'].size(1) > 512:
         encoded_dict = tokenizer.batch_encode_plus(
-          text,
-          max_length=512,
-          pad_to_max_length=True,
-          truncation_strategy='only_first',
-          return_tensors='pt'
+            text,
+            max_length=512,
+            pad_to_max_length=True,
+            truncation_strategy='only_first',
+            return_tensors='pt'
         )
     encoded_dict = {key: tensor.to(device)
                   for key, tensor in encoded_dict.items()}
