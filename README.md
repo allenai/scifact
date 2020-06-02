@@ -73,7 +73,7 @@ There are four `training-dataset`s:
 4. `fever_scifact` (i.e. fever followed by scifact)
 
 The best-performing pipeline reported in Table 1 of the [paper](https://arxiv.org/abs/2004.14974) uses:
-- `rationale`: `roberta_large` + `fever`
+- `rationale`: `roberta_large` + `scifact`
 - `label`: `roberta_large` + `fever_scifact`
 
 For `fever` and `fever_scifact`, there are models available for all 4 BERT variants. For `snopes`, only `roberta_large` is available for download (but you can train your own model).
