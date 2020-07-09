@@ -2,7 +2,7 @@
 
 This repository contains data and code for the paper [Fact or Fiction: Verifying Scientific Claims](https://arxiv.org/abs/2004.14974) by David Wadden, Shanchuan Lin, Kyle Lo, Lucy Lu Wang, Madeleine van Zuylen, Arman Cohan, and Hannaneh Hajishirzi.
 
-- Project [website](https://scifact.apps.allenai.org).
+- Project [website and demo](https://scifact.apps.allenai.org), including a COVID-19 claim verification demo. For a heavier-weight COVID claim verifier, see the section on [verifying COVID-19 claims](#verify-claims-about-covid-19).
 
 ## Table of contents
 - [Dependencies](#dependencies)
@@ -11,6 +11,7 @@ This repository contains data and code for the paper [Fact or Fiction: Verifying
 - [Download pre-trained models](#download-pre-trained-models)
 - [Training scripts](#training-scripts)
 - [Leaderboard](#leaderboard)
+- [Verify claims about COVID-19](#verify-claims-about-covid-19)
 - [Contact](#contact)
 
 
@@ -92,6 +93,27 @@ After downloading the pretrained-model, you can follow instruction [model.md](do
 ## Training scripts
 
 See [training.md](training.md).
+
+## Verify claims about COVID-19
+
+While the project [website](https://scifact.apps.allenai.org) features a COVID-19 fact-checking demo, it is not configurable and uses a "light-weight" version of VeriSci based on [DistilBERT](https://arxiv.org/abs/1910.01108). We provide a more configurable fact-checking script that uses the full model. Like the web demo, it uses [covidex](https://covidex.ai) for document retrieval.  Usage is as follows:
+
+```shell
+python script/verify_covid.py [claim-text] [report-file] [optional-arguments].
+```
+
+For a description of the optional arguments, run `python script/verify_covid.py -h`. The script generates either a `pdf` or `markdown` report. The `pdf` version requires [pandoc](https://pandoc.org) and [wkhtmltopdf](https://wkhtmltopdf.org), both of which can be installed with `conda`. A usage example might be:
+
+```shell
+python script/verify_covid.py \
+  "Coronavirus droplets can remain airborne for hours" \
+  results/covid-report \
+  --n_documents=100 \
+  --rationale_selection_method=threshold \
+  --rationale_threshold=0.2 \
+  --verbose \
+  --full_abstract
+```
 
 ## Leaderboard
 
