@@ -2,8 +2,13 @@ import json
 from urllib.parse import quote
 from urllib.request import Request, urlopen
 
+import spacy
+
 
 class AbstractRetriever:
+    def __init__(self):
+        self.nlp = spacy.load("en_core_sci_sm")
+
     def __call__(self, claim: str, k=20):
         req = Request(url=f'https://covidex.ai/api/search?vertical=cord19&query={quote(claim)}',
                       headers={'User-Agent': 'SciFact'})
@@ -28,10 +33,14 @@ class AbstractRetriever:
                 blob = {
                     'id': data['id'],                                                 # str
                     'title': data['title'],                                           # str
-                    'abstract': [s + '.' for s in data['abstract'].split('. ')],      # List[str]
+                    'abstract': self._sentencize(data["abstract"]),                   # List[str]
                     'journal': data['journal'],                                       # str
                     'url': new_url,
                     'authors': data['authors'],                                       # List[str]
                 }
                 out.append(blob)
         return out[:k]
+
+    def _sentencize(self, text):
+        doc = self.nlp(text)
+        return [sent.text for sent in doc.sents]

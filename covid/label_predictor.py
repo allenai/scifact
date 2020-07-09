@@ -4,11 +4,12 @@ from typing import List
 
 
 class LabelPredictor:
-    def __init__(self, model):
+    def __init__(self, model: str, keep_nei: bool):
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.tokenizer = AutoTokenizer.from_pretrained(model)
         self.model = AutoModelForSequenceClassification.from_pretrained(model).eval().to(self.device)
         self.labels = ['REFUTE', 'NOT_ENOUGH_INFO', 'SUPPORT']
+        self.keep_nei = keep_nei
 
     def __call__(self, claim: str, retrievals: List[dict]):
         results = []
@@ -24,7 +25,10 @@ class LabelPredictor:
                 encoded_dict = {key: tensor.to(self.device) for key, tensor in encoded_dict.items()}
                 label_scores = self.model(**encoded_dict)[0].softmax(dim=1)
                 label_index = label_scores.argmax(dim=1).item()
-                if label_index != 1:
+
+                # If `keep_nei` is true, keep all evidence.
+                keep = self.keep_nei or (label_index != 1)
+                if keep:
                     result = retrieval.copy()
                     result['label'] = self.labels[label_index]
                     result['label_confidence'] = label_scores[0, label_index].item()

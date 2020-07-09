@@ -1,13 +1,16 @@
 import torch
+import numpy as np
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from typing import List
 
 
 class RationaleSelector:
-    def __init__(self, model: str):
+    def __init__(self, model: str, selection_method: str, threshold: float):
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.tokenizer = AutoTokenizer.from_pretrained(model)
         self.model = AutoModelForSequenceClassification.from_pretrained(model).eval().to(self.device)
+        self.selection_method = selection_method
+        self.threshold = threshold
 
     def __call__(self, claim: str, documents: List[dict], k=3):
         results = []
@@ -21,7 +24,13 @@ class RationaleSelector:
                 encoded_dict = {key: tensor.to(self.device) for key, tensor in encoded_dict.items()}
                 evidence_logits = self.model(**encoded_dict)[0]
                 evidence_scores = torch.sigmoid(evidence_logits[:, 1]).cpu().numpy()
-                evidence_indices = list(sorted(evidence_scores.argsort()[-k:][::-1].tolist()))
+
+                if self.selection_method == "threshold":
+                    keep = evidence_scores > self.threshold
+                    evidence_indices = sorted(keep.nonzero()[0].tolist())
+                else:
+                    evidence_indices = list(sorted(evidence_scores.argsort()[-k:][::-1].tolist()))
+
                 document = document.copy()
                 document['evidence'] = evidence_indices
                 document['evidence_confidence'] = evidence_scores[evidence_indices].tolist()
