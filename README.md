@@ -53,7 +53,7 @@ To recreate table 7:
 ./script/pipeline.sh [retrieval] [model] [dataset]
 ```
 - `[retrieval]` options: `oracle`, `open`
-- `[model]` options: `oracle-rationle`, `zero-shot`, `verisci`
+- `[model]` options: `oracle-rationale`, `zero-shot`, `verisci`
 - `[dataset]` options: `dev`, `test`
 
 Some numbers may be off by 0.1 F1, since in Table 7 report the mean over 10,000 bootstrap-resampled dev sets and here we just report the result on the full dev set.
