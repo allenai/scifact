@@ -12,7 +12,6 @@ This repository contains data and code for the paper [Fact or Fiction: Verifying
 - [Training scripts](#training-scripts)
 - [Verify claims about COVID-19](#verify-claims-about-covid-19)
 - [Leaderboard](#leaderboard)
-- [License](#license)
 - [Citation](#citation)
 - [Contact](#contact)
 
@@ -120,11 +119,6 @@ python script/verify_covid.py \
 ## Leaderboard
 
 In progress. For now, feel free to email test-set predictions to the contact below.
-
-## License
-
-- **Data**: The SciFact dataset is released under the [CC BY-NC 2.0](https://creativecommons.org/licenses/by-nc/2.0/). By using the SciFact data, you are agreeing to its usage terms.
-- **Code**: The code in this repository is licensed under the [Apache 2.0 license](https://www.apache.org/licenses/LICENSE-2.0).
 
 ## Citation
 
