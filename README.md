@@ -10,8 +10,10 @@ This repository contains data and code for the paper [Fact or Fiction: Verifying
 - [Download data set](#download-data-set)
 - [Download pre-trained models](#download-pre-trained-models)
 - [Training scripts](#training-scripts)
-- [Leaderboard](#leaderboard)
 - [Verify claims about COVID-19](#verify-claims-about-covid-19)
+- [Leaderboard](#leaderboard)
+- [License](#license)
+- [Citation](#citation)
 - [Contact](#contact)
 
 
