@@ -119,6 +119,23 @@ python script/verify_covid.py \
 
 In progress. For now, feel free to email test-set predictions to the contact below.
 
+## License
+
+- **Data**: The SciFact dataset is released under the [CC BY-NC 2.0](https://creativecommons.org/licenses/by-nc/2.0/). By using the SciFact data, you are agreeing to its usage terms.
+- **Code**: The code in this repository is licensed under the [Apache 2.0 license](https://www.apache.org/licenses/LICENSE-2.0).
+
+## Citation
+
+```bibtex
+@article{Wadden2020FactOF,
+  title={Fact or Fiction: Verifying Scientific Claims},
+  author={David Wadden and Kyle Lo and Lucy Lu Wang and Shanchuan Lin and Madeleine van Zuylen and Arman Cohan and Hannaneh Hajishirzi},
+  journal={ArXiv},
+  year={2020},
+  volume={abs/2004.14974}
+}
+```
+
 ## Contact
 
 Email: `davidw@allenai.org`.
