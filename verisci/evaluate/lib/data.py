@@ -23,12 +23,16 @@ class Label(Enum):
     REFUTES = -1
 
 
-def make_label(label_str):
+def make_label(label_str, allow_NEI=True):
     lookup = {"SUPPORT": Label.SUPPORTS,
-              "NOT_ENOUGH_INFO": Label.NEI,
+              "NOT_ENOUGH_INFO":  Label.NEI,
               "CONTRADICT": Label.REFUTES}
-    assert label_str in lookup
-    return lookup[label_str]
+
+    res = lookup[label_str]
+    if (not allow_NEI) and (res is Label.NEI):
+        raise ValueError("An NEI was given.")
+
+    return res
 
 
 ####################
@@ -205,13 +209,13 @@ class PredictedDataset:
     """
     Class to handle predictions, with a pointer back to the gold data.
     """
-    def __init__(self, gold, rationale_file, label_file):
+    def __init__(self, gold, prediction_file):
         """
         Takes a GoldDataset, as well as files with rationale and label
         predictions.
         """
         self.gold = gold
-        self.predictions = self._read_predictions(rationale_file, label_file)
+        self.predictions = self._read_predictions(prediction_file)
 
     def __getitem__(self, i):
         return self.predictions[i]
@@ -220,42 +224,33 @@ class PredictedDataset:
         msg = f"Predictions for {len(self.predictions)} claims."
         return msg
 
-    def _read_predictions(self, rationale_file, label_file):
-        predictions = []
+    def _read_predictions(self, prediction_file):
+        res = []
 
-        rationales = load_jsonl(rationale_file)
-        labels = load_jsonl(label_file)
-        for rationale, label in zip(rationales, labels):
-            prediction = self._parse_prediction(rationale, label)
-            predictions.append(prediction)
+        predictions = load_jsonl(prediction_file)
+        for pred in predictions:
+            prediction = self._parse_prediction(pred)
+            res.append(prediction)
 
-        return predictions
+        return res
 
-    def _parse_prediction(self, rationale, label):
-        assert rationale["claim_id"] == label["claim_id"]
-        claim_id = rationale["claim_id"]
-        evidences = rationale["evidence"]
-        labels = label["labels"]
+    def _parse_prediction(self, pred_dict):
+        claim_id = pred_dict["id"]
+        predicted_evidence = pred_dict["evidence"]
 
-        # Make sure all the keys in labels are in evidences.
-        label_keys = set(labels.keys())
-        evidence_keys = set(evidences.keys())
-        assert label_keys.issubset(evidence_keys)
+        res = {}
 
-        preds = {}
+        # Predictions should never be NEI; there should only be predictions for
+        # the abstracts that contain evidence.
+        for key, this_prediction in predicted_evidence.items():
+            label = this_prediction["label"]
+            evidence = this_prediction["sentences"]
+            pred = PredictedAbstract(int(key),
+                                     make_label(label, allow_NEI=False),
+                                     evidence)
+            res[int(key)] = pred
 
-        # Deal with the NEI case separately from evidence case.
-        for key in evidences:
-            if key not in labels:
-                label = {"label": "NOT_ENOUGH_INFO", "confidence": 1}
-            else:
-                label = labels[key]
-            evidence = evidences[key]
-            pred = PredictedAbstract(int(key), make_label(label["label"]),
-                                     label["confidence"], evidence)
-            preds[int(key)] = pred
-
-        return ClaimPredictions(claim_id, preds)
+        return ClaimPredictions(claim_id, res)
 
 
 @dataclass
@@ -264,7 +259,6 @@ class PredictedAbstract:
     # list of separate rationales (see paper for details).
     abstract_id: int
     label: Label
-    confidence: float
     rationale: List
 
 

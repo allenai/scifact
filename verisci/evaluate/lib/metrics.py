@@ -168,6 +168,6 @@ def compute_metrics(preds):
 
     return pd.DataFrame(
         {"abstract_label_only": compute_f1(counts_abstract, "label_only"),
-         "abstract_rationalied": compute_f1(counts_abstract, "rationalized"),
+         "abstract_rationalized": compute_f1(counts_abstract, "rationalized"),
          "sentence_selection": compute_f1(counts_sentence, "selection"),
          "sentence_label": compute_f1(counts_sentence, "label")})
