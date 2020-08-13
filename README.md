@@ -37,11 +37,11 @@ pip install -r requirements.txt
 
 We provide scripts let you easily run our models and re-create the metrics published in paper. The script will automatically download the dataset and pre-trained models. You should be able to reproduce our dev set results from the paper by following these instructions (we are not releasing test set labels at this point). Please post an issue if you're unable to do this.
 
-To recreate table 3 rationale selection metrics:
+To recreate Table 3 rationale selection metrics:
 ```bash
 ./script/rationale-selection.sh [bert-variant] [training-dataset] [dataset]
 ```
-To recreate table 3 label prediction metrics:
+To recreate Table 3 label prediction metrics:
 ```bash
 ./script/label-prediction.sh [bert-variant] [training-dataset] [dataset]
 ```
@@ -49,7 +49,7 @@ To recreate table 3 label prediction metrics:
 - `[training-dataset]` options: `scifact`, `scifact_only_claim`, `scifact_only_rationale`, `fever_scifact`, `fever`, `snopes`
 - `[dataset]` options: `dev`, `test`
 
-To recreate table 7:
+To recreate Table 4:
 ```bash
 ./script/pipeline.sh [retrieval] [model] [dataset]
 ```
@@ -57,7 +57,6 @@ To recreate table 7:
 - `[model]` options: `oracle-rationale`, `zero-shot`, `verisci`
 - `[dataset]` options: `dev`, `test`
 
-Some numbers may be off by 0.1 F1, since in Table 7 report the mean over 10,000 bootstrap-resampled dev sets and here we just report the result on the full dev set.
 
 ## Download data set
 
@@ -118,7 +117,8 @@ python script/verify_covid.py \
 
 ## Leaderboard
 
-In progress. For now, feel free to email test-set predictions to the contact below.
+For instructions on making leaderboard submissions, see [leaderboard.md](doc/leaderboard.md). For questions, email the [contact](#contact) below.
+
 
 ## Citation
 

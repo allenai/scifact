@@ -23,9 +23,9 @@ The schema for the claim data is as follows:
     "id": number,                   # An integer claim ID.
     "claim": string,                # The text of the claim.
     "evidence": {                   # The evidence for the claim.
-        "doc_id": [                 # The rationales for a single document, keyed by S2ORC ID.
+        [doc_id]: [                 # The rationales for a single document, keyed by S2ORC ID.
             {
-                "label": enum("SUPPORT" | "CONTRADICT" | "NOT_ENOUGH_INFO"),
+                "label": enum("SUPPORT" | "CONTRADICT"),
                 "sentences": number[]
             }
         ]
