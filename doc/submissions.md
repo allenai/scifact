@@ -1,9 +1,4 @@
-# Leaderboard submissions
-
-To make a submission to the leaderboard, fill out this [Google form](https://forms.gle/Sbisy95t5c5bvEYF6). You will be asked to submit a `.jsonl` file containing your test set predictions. We will compute performance metrics and notify you with results. With your consent, we will also add your model's performance to the leaderboard.
-
-
-## Schema for predictions
+# Leaderboard submission format
 
 Each line should contain a prediction for a single test set document. The schema is similar to that of the gold data described in [data.md](data.md), but simplified as follows: for each evidence document, the model is asked to predict a single label and a list of rationale sentences, rather than predicting rationales explicitly. More details can be found in the [paper](https://arxiv.org/abs/2004.14974).
 
