@@ -117,9 +117,11 @@ python script/verify_covid.py \
 
 ## Leaderboard
 
-To make a submission to the leaderboard, fill out this [Google form](https://docs.google.com/forms/d/e/1FAIpQLSf-o6ZBXNCiD35f-CHdLxkHRJbcmEBVsTCJDxN_1X5PuhsJBw/viewform?usp=sf_link). You will be asked to submit a `.jsonl` file containing your test set predictions. We will compute performance metrics and notify you with results. With your consent, we will also add your model's performance to the leaderboard.
+**If you have a Google account (preferred)**: Fill out this [Google form](https://docs.google.com/forms/d/e/1FAIpQLSf-o6ZBXNCiD35f-CHdLxkHRJbcmEBVsTCJDxN_1X5PuhsJBw/viewform?usp=sf_link). You will be asked to submit a `.jsonl` file containing your test set predictions.
 
-For information on the submission file format, see [submissions.md](doc/submissions.md). For questions, email the [contact](#contact) below.
+**If you do not have a Google account**: E-mail your prediction file to the [contact](#contact) below. Make sure to provide your name and affiliation in the email.
+
+We will compute performance metrics and notify you with results. With your consent, we will also add your model's performance to the leaderboard. For information on the submission file format, see [submissions.md](doc/submissions.md).
 
 
 ## Citation
