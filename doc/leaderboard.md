@@ -1,6 +1,6 @@
 # Leaderboard submissions
 
-To make a submission to the leaderboard, fill out this [Google form](https://forms.gle/Sbisy95t5c5bvEYF6). You will be asked to submit a `.jsonl` file containing your test set predictions. We will compute performance metrics and provide you with results. With your consent, we will also add your model's performance to the leaderboard.
+To make a submission to the leaderboard, fill out this [Google form](https://forms.gle/Sbisy95t5c5bvEYF6). You will be asked to submit a `.jsonl` file containing your test set predictions. We will compute performance metrics and notify you with results. With your consent, we will also add your model's performance to the leaderboard.
 
 
 ## Schema for predictions
