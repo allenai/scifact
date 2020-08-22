@@ -5,9 +5,9 @@ The data formats and code used to visualize and work with the data are described
 ## Outline
 
 - [Gold data](#gold-data)
-    - [Claims](#claims)
-    - [Corpus](#corpus)
-    - [Code](#code)
+- [Claims](#claims)
+- [Corpus](#corpus)
+- [Code](#code)
 
 ## Gold data
 
