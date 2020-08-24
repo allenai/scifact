@@ -250,7 +250,8 @@ class PredictedDataset:
                                      evidence)
             res[int(key)] = pred
 
-        return ClaimPredictions(claim_id, res)
+        gold_claim = self.gold.get_claim(claim_id)
+        return ClaimPredictions(claim_id, res, gold_claim)
 
 
 @dataclass
@@ -266,3 +267,26 @@ class PredictedAbstract:
 class ClaimPredictions:
     claim_id: int
     predictions: Dict[int, PredictedAbstract]
+    gold: Claim = None    # For backward compatibility, default this to None.
+
+    def __repr__(self):
+        msg = f"Predictions for {self.claim_id}: {self.gold.claim}"
+        return msg
+
+    def pretty_print(self, evidence_doc_id=None, file=None):
+        msg = self.__repr__()
+        print(msg, file=file)
+        # Print the evidence
+        print("\nEvidence sets:", file=file)
+        for doc_id, prediction in self.predictions.items():
+            # If asked for a specific evidence doc, only show that one.
+            if evidence_doc_id is not None and doc_id != evidence_doc_id:
+                continue
+            print("\n" + 20 * "#" + "\n", file=file)
+            ev_doc = self.gold.release.corpus.get_document(doc_id)
+            print(f"{doc_id}: {prediction.label.name}", file=file)
+            # Print the predicted rationale.
+            sents = prediction.rationale
+            kept = [sent for i, sent in enumerate(ev_doc.sentences) if i in sents]
+            for entry in kept:
+                print(f"\t- {entry}", file=file)
