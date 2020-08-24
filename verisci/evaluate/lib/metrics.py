@@ -14,11 +14,18 @@ import pandas as pd
 MAX_ABSTRACT_SENTS = 3
 
 
+def safe_divide(num, denom):
+    if denom == 0:
+        return 0
+    else:
+        return num / denom
+
+
 def compute_f1(counts, difficulty=None):
     correct_key = "correct" if difficulty is None else f"correct_{difficulty}"
-    precision = counts[correct_key] / counts["retrieved"]
-    recall = counts[correct_key] / counts["relevant"]
-    f1 = (2 * precision * recall) / (precision + recall)
+    precision = safe_divide(counts[correct_key], counts["retrieved"])
+    recall = safe_divide(counts[correct_key], counts["relevant"])
+    f1 = safe_divide(2 * precision * recall, precision + recall)
     return {"precision": precision, "recall": recall, "f1": f1}
 
 
