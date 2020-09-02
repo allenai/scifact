@@ -132,6 +132,8 @@ python script/verify_covid.py \
   --full_abstract
 ```
 
+The 36 claims COVID claims mentions in the paper can be found at [covid/claims.txt](covid/claims.txt).
+
 ## Citation
 
 ```bibtex

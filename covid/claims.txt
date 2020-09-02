@@ -1,0 +1,36 @@
+24-37% of patients who test positive for COVID-19 have underlying comorbidities.
+Aerosolized SARS-CoV-2 viral particles can travel further than 6 feet.
+Bilateral ground glass opacities are often seen on chest imaging in COVID-19 patients.
+Cardiac injury is common in critical cases of COVID-19.
+Cats are carriers of SARS-CoV-2.
+Chloroquine has been used in the treatment of patients with severe COVID-19.
+Chloroquine has shown antiviral efficacy against SARS-CoV-2 in vitro through interference with the ACE2-receptor mediated endocytosis.
+Chloroquine in combination with azithromycin has been used in the treatment of patients with severe COVID-19.
+Diabetes is a common comorbidity seen in COVID-19 patients.
+Diabetes is a predictor of severe disease and mortality associated with COVID-19.
+Health care workers working with COVID-19 have an increased risk for mental illness.
+Healthcare transmission of COVID-19 is responsible for 40% of cases.
+Heart Disease and Diabetes are the most common predictors of severe disease and mortality in COVID-19.
+Heart Disease is a predictor of severe disease and mortality associated with COVID-19.
+Higher viral loads of SARS-CoV-2 are associated with more severe symptoms.
+Hypertension and Diabetes are the most common comorbidities for COVID-19.
+Hypertension is a common comorbidity seen in COVID-19 patients.
+Increased markers of inflammation are associated with severe COVID-19 disease.
+Lopinavir / ritonavir have exhibited favorable clinical responses when used as a treatment for coronavirus.
+Lymphopenia is associated with severe COVID-19 disease.
+Mass masking reduces COVID-19 transmission rates.
+Non-caucasian populations are at higher risk for COVID-19 infection due to inequality and chronic health conditions.
+Older age is a positive predictor of mortality in COVID-19.
+Remdesevir has exhibited favorable clinical responses when used as a treatment for coronavirus.
+Respiratory failure is common in critical cases of COVID-19.
+SARS-CoV-2 binds ACE2 receptor to gain entry into cells.
+Suspected spread of COVID-19 to humans occurred via transmission from wild animals at a seafood market in Wuhan, China.
+Symptoms of COVID-19 are more severe in men compared to women and children.
+The Secondary Attack rate of COVID-19 is 10.5% for household members/close contacts.
+The coronavirus cannot thrive in warmer climates.
+There are no FDA-approved treatments for COVID-19.
+Transmission of COVID-19 occurs predominantly through respiratory droplets and fomites.
+Viable SARS-CoV-2 viral particles can remain in the air for 3 hours post aerosolization.
+Viable SARS-CoV-2 viral particles can remain on cardboard for 24 hours.
+Viable SARS-CoV-2 viral particles can remain on plastic for 2 - 3 days.
+Viable SARS-CoV-2 viral particles can remain on steel for 13 hours.
