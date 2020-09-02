@@ -5,7 +5,7 @@ paper.
 
 import warnings
 
-from lib.data import Label
+from .data import Label
 from collections import Counter
 import pandas as pd
 
@@ -174,7 +174,8 @@ def compute_metrics(preds):
         counts_sentence = update_counts_sentence(pred, gold, counts_sentence)
 
     return pd.DataFrame(
-        {"abstract_label_only": compute_f1(counts_abstract, "label_only"),
-         "abstract_rationalized": compute_f1(counts_abstract, "rationalized"),
-         "sentence_selection": compute_f1(counts_sentence, "selection"),
-         "sentence_label": compute_f1(counts_sentence, "label")})
+        {"sentence_selection": compute_f1(counts_sentence, "selection"),
+         "sentence_label": compute_f1(counts_sentence, "label"),
+         "abstract_label_only": compute_f1(counts_abstract, "label_only"),
+         "abstract_rationalized": compute_f1(counts_abstract, "rationalized")
+         })
