@@ -80,6 +80,16 @@ class Corpus:
         assert len(res) == 1
         return res[0]
 
+    @classmethod
+    def from_jsonl(cls, corpus_file):
+        corpus = load_jsonl(corpus_file)
+        documents = []
+        for entry in corpus:
+            doc = Document(entry["doc_id"], entry["title"], entry["abstract"])
+            documents.append(doc)
+
+        return cls(documents)
+
 
 ####################
 
@@ -90,7 +100,7 @@ class GoldDataset:
     Class to represent a gold dataset, include corpus and claims.
     """
     def __init__(self, corpus_file, data_file):
-        self.corpus = self._read_corpus(corpus_file)
+        self.corpus = Corpus.from_jsonl(corpus_file)
         self.claims = self._read_claims(data_file)
 
     def __repr__(self):
@@ -99,16 +109,6 @@ class GoldDataset:
 
     def __getitem__(self, i):
         return self.claims[i]
-
-    def _read_corpus(self, corpus_file):
-        "Read corpus from file."
-        corpus = load_jsonl(corpus_file)
-        documents = []
-        for entry in corpus:
-            doc = Document(entry["doc_id"], entry["title"], entry["abstract"])
-            documents.append(doc)
-
-        return Corpus(documents)
 
     def _read_claims(self, data_file):
         "Read claims from file."
