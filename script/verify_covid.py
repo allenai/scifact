@@ -22,6 +22,8 @@ def get_args():
                         help="Output format. PDF requires Pandoc.")
     parser.add_argument("--rationale_threshold", type=float, default=0.5,
                         help="Classification threshold for selecting rationale sentences.")
+    parser.add_argument("--label_threshold", type=float, default=0.5,
+                        help="Classification threshold for label score.")
     parser.add_argument("--keep_nei", action="store_true",
                         help="Keep examples labeled `NOT_ENOUGH_INFO`, for which evidence was identified.")
     parser.add_argument("--full_abstract", action="store_true",
@@ -53,6 +55,7 @@ def inference(args):
                                            device)
     label_predictor = LabelPredictor(label_prediction_model,
                                      args.keep_nei,
+                                     args.label_threshold,
                                      device)
 
     # Run model.
