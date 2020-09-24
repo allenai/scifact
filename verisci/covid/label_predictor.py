@@ -1,20 +1,22 @@
 import torch
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from typing import List
+from tqdm import tqdm
 
 
 class LabelPredictor:
-    def __init__(self, model: str, keep_nei: bool):
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    def __init__(self, model: str, keep_nei: bool, device: torch.device):
+        self.device = device
         self.tokenizer = AutoTokenizer.from_pretrained(model)
         self.model = AutoModelForSequenceClassification.from_pretrained(model).eval().to(self.device)
         self.labels = ['REFUTE', 'NOT_ENOUGH_INFO', 'SUPPORT']
         self.keep_nei = keep_nei
 
     def __call__(self, claim: str, retrievals: List[dict]):
+        print("Predicting labels.")
         results = []
         with torch.no_grad():
-            for retrieval in retrievals:
+            for retrieval in tqdm(retrievals):
                 if not retrieval['evidence']:
                     continue
                 sentences = [retrieval['abstract'][i] for i in retrieval['evidence']]

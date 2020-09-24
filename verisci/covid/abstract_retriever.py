@@ -10,6 +10,7 @@ class AbstractRetriever:
         self.nlp = spacy.load("en_core_sci_sm")
 
     def __call__(self, claim: str, k=20):
+        print("Retrieving abstracts.")
         req = Request(url=f'https://covidex.ai/api/search?vertical=cord19&query={quote(claim)}',
                       headers={'User-Agent': 'SciFact'})
         res = json.loads(urlopen(req).read())

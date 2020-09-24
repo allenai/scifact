@@ -1,6 +1,7 @@
 import argparse
 from subprocess import call
 import os
+import torch
 
 from verisci.covid import AbstractRetriever, RationaleSelector, LabelPredictor
 
@@ -27,6 +28,8 @@ def get_args():
                         help="Show full abstracts, not just evidence sentences.")
     parser.add_argument("--verbose", action="store_true",
                         help="Verbose model output.")
+    parser.add_argument("--device", type=str, default=None,
+                        help="Device to use. Defaults to `gpu` if one is available, else `cpu`.")
     return parser.parse_args()
 
 
@@ -36,11 +39,21 @@ def inference(args):
         print("Initializing model.")
     rationale_selection_model = 'model/rationale_roberta_large_scifact'
     label_prediction_model = 'model/label_roberta_large_fever_scifact'
+
+    # Get device.
+    if args.device is None:
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    else:
+        device = torch.device(args.device)
+
     abstract_retriever = AbstractRetriever()
     rationale_selector = RationaleSelector(rationale_selection_model,
                                            args.rationale_selection_method,
-                                           args.rationale_threshold)
-    label_predictor = LabelPredictor(label_prediction_model, args.keep_nei)
+                                           args.rationale_threshold,
+                                           device)
+    label_predictor = LabelPredictor(label_prediction_model,
+                                     args.keep_nei,
+                                     device)
 
     # Run model.
     if args.verbose:
@@ -117,6 +130,7 @@ def export(args, results):
 def main():
     args = get_args()
     results = inference(args)
+    import ipdb; ipdb.set_trace()
     export(args, results)
 
 
