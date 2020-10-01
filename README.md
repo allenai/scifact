@@ -18,15 +18,7 @@ This repository contains data and code for the paper [Fact or Fiction: Verifying
 
 ## Leaderboard
 
-| System name                           | Affiliation            |       Date | Sentence-level F1 | Abstract-level F1 |
-|---------------------------------------|------------------------|------------|-------------------|-------------------|
-| VerT5erini (2-stage Neural Retrieval) | University of Waterloo | 2020-08-29 |          **58.8** |          **62.7** |
-| VerT5erini (BM25 Retrieval)           | University of Waterloo | 2020-08-29 |              55.5 |              59.2 |
-| VeriSci                               | AI2                    | 2020-08-12 |              39.5 |              46.5 |
-| Zero-Shot (trained on FEVER)          | AI2                    | 2020-08-12 |              26.9 |              36.4 |
-
-
-### Submitting to the leaderboard
+The leaderboard is hosted on the [SciFact project page](https://scifact.apps.allenai.org/leaderboard). To submit, follow these instructions:
 
 **If you have a Google account (preferred)**: Fill out this [Google form](https://docs.google.com/forms/d/e/1FAIpQLSf-o6ZBXNCiD35f-CHdLxkHRJbcmEBVsTCJDxN_1X5PuhsJBw/viewform?usp=sf_link). You will be asked to submit a `.jsonl` file containing your test set predictions.
 
