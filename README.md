@@ -22,7 +22,10 @@ The leaderboard is hosted on the [SciFact project page](https://scifact.apps.all
 
 **If you have a Google account (preferred)**: Fill out this [Google form](https://docs.google.com/forms/d/e/1FAIpQLSf-o6ZBXNCiD35f-CHdLxkHRJbcmEBVsTCJDxN_1X5PuhsJBw/viewform?usp=sf_link). You will be asked to submit a `.jsonl` file containing your test set predictions.
 
-**If you do not have a Google account**: E-mail your prediction file to the [contact](#contact) below. Make sure to provide your name and affiliation in the email.
+**If you do not have a Google account**: E-mail your prediction file to the [contact](#contact) below. Please provide the following information in the email:
+
+- Submitter name, affiliation, and (optionally) a link to your lab / research group.
+- The name of your system, and (optionally) a link to the arXiv preprint where it is presented.
 
 We will compute performance metrics and notify you with results. With your consent, we will also add your model's performance to the leaderboard. For information on the submission file format, see [submissions.md](doc/submissions.md).
 
