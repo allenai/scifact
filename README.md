@@ -134,12 +134,11 @@ The 36 claims COVID claims mentions in the paper can be found at [covid/claims.t
 ## Citation
 
 ```bibtex
-@article{Wadden2020FactOF,
+@inproceedings{Wadden2020FactOF,
   title={Fact or Fiction: Verifying Scientific Claims},
   author={David Wadden and Kyle Lo and Lucy Lu Wang and Shanchuan Lin and Madeleine van Zuylen and Arman Cohan and Hannaneh Hajishirzi},
-  journal={ArXiv},
+  booktitle={EMNLP},
   year={2020},
-  volume={abs/2004.14974}
 }
 ```
 
