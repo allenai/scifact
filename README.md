@@ -106,7 +106,7 @@ After downloading the pretrained-model, you can follow instruction [model.md](do
 
 ## Training scripts
 
-See [training.md](training.md).
+See [training.md](doc/training.md).
 
 ## Verify claims about COVID-19
 
