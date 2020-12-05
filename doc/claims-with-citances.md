@@ -1,4 +1,4 @@
-The file `claims-with-citances.jsonl` contains data to allow researchers to train "claim generation" models: given a citation context, generate self-contained "atomic" claims based on the context.
+The file `claims_with_citances.jsonl` contains data to allow researchers to train "claim generation" models: given a citation context, generate self-contained "atomic" claims based on the context.
 
 Each line in the file contains information on the claims written based on a single citaion sentence. The fiels are:
 
