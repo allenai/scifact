@@ -84,6 +84,18 @@ The claims are split into `claims_train.jsonl`, `claims_dev.jsonl`, and `claims_
 
 See [data.md](doc/data.md) for descriptions of the schemas for each file type.
 
+
+### Claim generation data
+
+We also make available the collection of claims together with the documents and citation contexts they are based on. We hope that these data will facilitate the training of "claim generation" models that can summarize a citation context into atomic claims. Click [here](https://scifact.s3-us-west-2.amazonaws.com/release/2020-05-01/claims-with-citances.jsonl) to download the file, or enter
+
+```bash
+wget https://scifact.s3-us-west-2.amazonaws.com/release/2020-05-01/claims-with-citances.jsonl
+```
+
+For more information on the data, see [claims-with-citances.md](doc/claims-with-citances.md)
+
+
 ## Download pre-trained models
 
 All "BERT-to-BERT"-style models as described in the paper are stored in a public AWS S3 bucket. You can download the models models using the script:
