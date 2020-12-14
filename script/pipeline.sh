@@ -108,6 +108,6 @@ python3 verisci/inference/merge_predictions.py \
 # Evaluate final predictions
 echo; echo "Evaluating."
 python3 verisci/evaluate/pipeline.py \
-    --dataset data/claims_${dataset}.jsonl \
+    --gold data/claims_${dataset}.jsonl \
     --corpus data/corpus.jsonl \
     --prediction prediction/merged_predictions.jsonl

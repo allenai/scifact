@@ -153,11 +153,19 @@ python verisci/evaluate/label_prediction.py \
 
 ## Full Pipeline
 
-#### Evaluate
+#### Merge label and rationale predictions
+```sh
+python verisci/inference/merge_predictions.py \
+    --rationale-file prediction/rationale_selection.jsonl \
+    --label-file prediction/label_prediction.jsonl \
+    --result-file prediction/merged_predictions.jsonl
+```
+
+#### Evaluate the merged predictions
 ```sh
 python verisci/evaluate/pipeline.py \
-    --dataset data/claims_dev.jsonl \
+    --gold data/claims_dev.jsonl \
     --corpus data/corpus.jsonl \
-    --rationale-selection prediction/rationale_selection.jsonl \
-    --label-prediction prediction/label_prediction.jsonl
+    --prediction prediction/merged_predictions.jsonl \
+    --output predictions/metrics.json   # If no `output`, provided, print to console.
 ```
