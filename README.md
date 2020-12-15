@@ -4,6 +4,8 @@ This repository contains data and code for the paper [Fact or Fiction: Verifying
 
 Check out the project [website](https://scifact.apps.allenai.org), which includes a leaderboard and a COVID-19 claim verification demo. For a heavier-weight COVID claim verifier, see the section on [verifying COVID-19 claims](#verify-claims-about-covid-19).
 
+**Update (Dec 2020)**: SciFact will be used for the [SciVer](https://sdproc.org/2021/sharedtasks.html#sciver) shared task to be featured at the SDP workshop at NAACL 2021.  Registration is open!
+
 **Update (Dec 2020)**: Claim / citation context data now available to train claim generation models. See [Claim generation data](#claim-generation-data).
 
 ## Table of contents
