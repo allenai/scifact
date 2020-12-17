@@ -1,5 +1,4 @@
 #!/bin/bash
-/net/nfs2.corp/s2-research/davidw/proj/scifact/scifact/data/claims_train.jsonl
 #
 # This script recreates table 4 of the paper.
 #
