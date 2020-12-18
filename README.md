@@ -15,7 +15,7 @@ Check out the project [website](https://scifact.apps.allenai.org), which include
 - [Leaderboard](#leaderboard)
 - [Dependencies](#dependencies)
 - [Run models for paper metrics](#run-models-for-paper-metrics)
-- [Download data set](#download-data-set)
+- [Dataset](#dataset)
 - [Download pre-trained models](#download-pre-trained-models)
 - [Training scripts](#training-scripts)
 - [Verify claims about COVID-19](#verify-claims-about-covid-19)
@@ -79,7 +79,7 @@ To recreate Table 4:
 - `[dataset]` options: `dev`, `test`
 
 
-## Download data set
+## Dataset
 
 Download with script: The data will be downloaded and stored in the `data` directory.
 ```bash
