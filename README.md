@@ -89,6 +89,23 @@ Or, [click here](https://scifact.s3-us-west-2.amazonaws.com/release/2020-12-17/d
 
 The claims are split into `claims_train.jsonl` and `claims_dev.jsonl`, one claim per line. The corpus of evidence documents is `corpus.jsonl`, one evidence document per line. The test set claims are currently hidden, and will be revealed during the [SciVer](https://sdproc.org/2021/sharedtasks.html#sciver) shared task in the winter of 2021.
 
+Due to the relatively small size of the dataset, we also provide a 5-fold cross-validation split that may be useful for model development. After unzipping the tarball, the data will organized like this:
+
+```
+data
+| corpus.jsonl
+| claims_train.jsonl
+| claims_dev.jsonl
+| cross_validation
+  | fold_1
+    | claims_train_1.jsonl
+    | claims_dev_1.jsonl
+  ...
+  | fold_5
+    | claims_train_5.jsonl
+    | claims_dev_5.jsonl
+```
+
 See [data.md](doc/data.md) for descriptions of the schemas for each file type.
 
 
