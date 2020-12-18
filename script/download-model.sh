@@ -11,7 +11,7 @@
 model_dir="model"
 mkdir -p "$model_dir"
 
-base="https://scifact.s3-us-west-2.amazonaws.com/release/2020-05-01/models"
+base="https://scifact.s3-us-west-2.amazonaws.com/release/2020-12-17/models"
 model_component=$1
 bert_variant=$2
 training_dataset=$3
