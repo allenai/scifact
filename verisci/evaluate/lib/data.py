@@ -18,9 +18,9 @@ def load_jsonl(fname):
 
 
 class Label(Enum):
-    SUPPORTS = 1
-    NEI = 0
-    REFUTES = -1
+    SUPPORTS = 2
+    NEI = 1
+    REFUTES = 0
 
 
 def make_label(label_str, allow_NEI=True):
