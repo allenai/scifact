@@ -4,7 +4,10 @@ This repository contains data and code for the paper [Fact or Fiction: Verifying
 
 Check out the project [website](https://scifact.apps.allenai.org), which includes a leaderboard and a COVID-19 claim verification demo. For a heavier-weight COVID claim verifier, see the section on [verifying COVID-19 claims](#verify-claims-about-covid-19).
 
-[Click here](https://scifact.s3-us-west-2.amazonaws.com/release/2020-12-17/data.tar.gz) to download the dataset.
+⬇️[**Download the dataset here**](https://scifact.s3-us-west-2.amazonaws.com/release/2020-12-17/data.tar.gz).
+
+🏆[**Participate in SCIVER shared task here**](https://sdproc.org/2021/sharedtasks.html#sciver)
+
 
 **Update (Dec 2020)**: SciFact will be used for the [SciVer](https://sdproc.org/2021/sharedtasks.html#sciver) shared task to be featured at the SDP workshop at NAACL 2021.  Registration is open!
 
