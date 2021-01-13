@@ -47,7 +47,9 @@ The model predicts two abstracts are relevant to the claim. For each abstract, i
 
 ## Abstract-level scoring
 
-An abstract is _correctly predicted_ if (1) its a relevant abstract, (2) its predicted label matches gold label, and (3) at least one gold evidence set is contained among the predicted evidence sentences.
+An abstract is _correctly predicted_ if (1) it is a relevant abstract, (2) its predicted label matches gold label, and (3) at least one gold evidence set is contained among the predicted evidence sentences.
+
+Note that our abstract evaluation code only counts the **first three predicted evidence sentences** for a given abstract; additional sentences are ignored. This is similar to the FEVER score, and is required because abstract-level evaluation does not penalize the model for over-predicting rationale sentences.
 
 Precision and recall are defined as follows:
 
@@ -76,6 +78,8 @@ Finally, calculate precision, recall, and F1:
 ## Sentence-level scoring
 
 An evidence sentence is _correctly predicted_ if (1) its from a relevant abstract, (2) the label of its abstract matches gold label, and (3) it is part of some gold evidence set, and (3) all other sentences in that same gold evidence set are _also_ among the predicted evidence sentences.
+
+For sentence-level scoring, **all predicted evidence sentences are counted** (unlike abstract evaluation).
 
 Precision and recall are defined as follows:
 
