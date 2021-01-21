@@ -92,7 +92,7 @@ Example
 
 We've written some functions to facilitate pretty-printing of the evidence associated with each claim. For example, running the following snippet:
 ```python
-from versci.evaluate.lib.data import GoldDataset
+from verisci.evaluate.lib.data import GoldDataset
 
 data = GoldDataset("data/corpus.jsonl", "data/claims_train.jsonl")
 claim = data.get_claim(123)
