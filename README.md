@@ -90,7 +90,7 @@ Download with script: The data will be downloaded and stored in the `data` direc
 ```
 Or, [click here](https://scifact.s3-us-west-2.amazonaws.com/release/2020-12-17/data.tar.gz) to download the tarball.
 
-The claims are split into `claims_train.jsonl` and `claims_dev.jsonl`, one claim per line. The corpus of evidence documents is `corpus.jsonl`, one evidence document per line. The test set claims are currently hidden, and will be revealed during the [SciVer](https://sdproc.org/2021/sharedtasks.html#sciver) shared task in the winter of 2021.
+The claims are split into `claims_train.jsonl`, `claims_dev.jsonl`, and `claims_test.jsonl`, one claim per line. The claim and dev sets contain labels, while the test set is unlabeled. For test set evaluation, submit to the [leaderboard](https://leaderboard.allenai.org/scifact)! The corpus of evidence documents is `corpus.jsonl`, one evidence document per line.
 
 Due to the relatively small size of the dataset, we also provide a 5-fold cross-validation split that may be useful for model development. After unzipping the tarball, the data will organized like this:
 
@@ -99,6 +99,7 @@ data
 | corpus.jsonl
 | claims_train.jsonl
 | claims_dev.jsonl
+| claims_test.jsonl
 | cross_validation
   | fold_1
     | claims_train_1.jsonl
