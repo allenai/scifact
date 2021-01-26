@@ -4,7 +4,7 @@ This repository contains data and code for the paper [Fact or Fiction: Verifying
 
 Check out the project [website](https://scifact.apps.allenai.org), which includes a leaderboard and a COVID-19 claim verification demo. For a heavier-weight COVID claim verifier, see the section on [verifying COVID-19 claims](#verify-claims-about-covid-19).
 
-⬇️[**Download the dataset here**](https://scifact.s3-us-west-2.amazonaws.com/release/2020-12-17/data.tar.gz).
+⬇️[**Download the dataset here**](https://scifact.s3-us-west-2.amazonaws.com/release/latest/data.tar.gz).
 
 🏆[**Participate in SCIVER shared task here**](https://sdproc.org/2021/sharedtasks.html#sciver)
 
@@ -88,7 +88,7 @@ Download with script: The data will be downloaded and stored in the `data` direc
 ```bash
 ./script/download-data.sh
 ```
-Or, [click here](https://scifact.s3-us-west-2.amazonaws.com/release/2020-12-17/data.tar.gz) to download the tarball.
+Or, [click here](https://scifact.s3-us-west-2.amazonaws.com/release/latest/data.tar.gz) to download the tarball.
 
 The claims are split into `claims_train.jsonl`, `claims_dev.jsonl`, and `claims_test.jsonl`, one claim per line. The claim and dev sets contain labels, while the test set is unlabeled. For test set evaluation, submit to the [leaderboard](https://leaderboard.allenai.org/scifact)! The corpus of evidence documents is `corpus.jsonl`, one evidence document per line.
 
@@ -115,10 +115,10 @@ See [data.md](doc/data.md) for descriptions of the schemas for each file type.
 
 ### Claim generation data
 
-We also make available the collection of claims together with the documents and citation contexts they are based on. We hope that these data will facilitate the training of "claim generation" models that can summarize a citation context into atomic claims. Click [here](https://scifact.s3-us-west-2.amazonaws.com/release/2020-12-17/claims_with_citances.jsonl) to download the file, or enter
+We also make available the collection of claims together with the documents and citation contexts they are based on. We hope that these data will facilitate the training of "claim generation" models that can summarize a citation context into atomic claims. Click [here](https://scifact.s3-us-west-2.amazonaws.com/release/latest/claims_with_citances.jsonl) to download the file, or enter
 
 ```bash
-wget https://scifact.s3-us-west-2.amazonaws.com/release/2020-12-17/claims_with_citances.jsonl -P data
+wget https://scifact.s3-us-west-2.amazonaws.com/release/latest/claims_with_citances.jsonl -P data
 ```
 
 For more information on the data, see [claims-with-citances.md](doc/claims-with-citances.md)
