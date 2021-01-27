@@ -4,7 +4,7 @@ This repository contains data and code for the paper [Fact or Fiction: Verifying
 
 ⬇️[**Download the dataset here**](https://scifact.s3-us-west-2.amazonaws.com/release/latest/data.tar.gz).
 
-🏆[**Participate in SCIVER shared task here**](https://sdproc.org/2021/sharedtasks.html#sciver)
+🏆[**Participate in SCIVER shared task here**](https://sdproc.org/2021/sharedtasks.html#sciver).
 
 📈[**Check out the leaderboard here**](https://leaderboard.allenai.org/scifact/).
 
