@@ -43,7 +43,7 @@ In this example, we walk through the process of evaluating the predictions for a
 
 The claim has evidence in two abstracts. Abstract `11` has two separate evidence sets that serve to verify the claim while abstract `15` has one.
 
-```json
+```javascript
 {
   "claim": "ALDH1 expression is associated with poorer prognosis for breast cancer primary tumors.",
   "evidence": {
@@ -65,7 +65,7 @@ The claim has evidence in two abstracts. Abstract `11` has two separate evidence
 
 The model predicts two abstracts are relevant to the claim. For each abstract, it provides a label and a list of sentences as evidence sentences.
 
-```json
+```javascript
 {
   "claim": "ALDH1 expression is associated with poorer prognosis for breast cancer primary tumors.",
   "evidence": {
