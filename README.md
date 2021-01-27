@@ -2,11 +2,13 @@
 
 This repository contains data and code for the paper [Fact or Fiction: Verifying Scientific Claims](https://arxiv.org/abs/2004.14974) by David Wadden, Shanchuan Lin, Kyle Lo, Lucy Lu Wang, Madeleine van Zuylen, Arman Cohan, and Hannaneh Hajishirzi.
 
-Check out the project [website](https://scifact.apps.allenai.org), which includes a leaderboard and a COVID-19 claim verification demo. For a heavier-weight COVID claim verifier, see the section on [verifying COVID-19 claims](#verify-claims-about-covid-19).
-
 ⬇️[**Download the dataset here**](https://scifact.s3-us-west-2.amazonaws.com/release/latest/data.tar.gz).
 
 🏆[**Participate in SCIVER shared task here**](https://sdproc.org/2021/sharedtasks.html#sciver)
+
+[**Check out the leaderboard here**](https://leaderboard.allenai.org/scifact/).
+
+Or, check out our COVID-19 claim verification [demo](https://scifact.apps.allenai.org), demo. For a heavier-weight COVID claim verifier, see the section on [verifying COVID-19 claims](#verify-claims-about-covid-19).
 
 
 **Update (Dec 2020)**: SciFact will be used for the [SciVer](https://sdproc.org/2021/sharedtasks.html#sciver) shared task to be featured at the SDP workshop at NAACL 2021.  Registration is open!
@@ -28,16 +30,7 @@ Check out the project [website](https://scifact.apps.allenai.org), which include
 
 ## Leaderboard
 
-The leaderboard is hosted on the [SciFact project page](https://scifact.apps.allenai.org/leaderboard). To submit, follow these instructions:
-
-**If you have a Google account (preferred)**: Fill out this [Google form](https://docs.google.com/forms/d/e/1FAIpQLSf-o6ZBXNCiD35f-CHdLxkHRJbcmEBVsTCJDxN_1X5PuhsJBw/viewform?usp=sf_link). You will be asked to submit a `.jsonl` file containing your test set predictions.
-
-**If you do not have a Google account**: E-mail your prediction file to the [contact](#contact) below. Please provide the following information in the email:
-
-- Submitter name, affiliation, and (optionally) a link to your lab / research group.
-- The name of your system, and (optionally) a link to the arXiv preprint where it is presented.
-
-We will compute performance metrics and notify you with results. With your consent, we will also add your model's performance to the leaderboard. For information on the submission file format, see [submissions.md](doc/submissions.md).
+**UPDATE (Jan 2021)**: We now have an official [AI2 leaderboard](https://leaderboard.allenai.org/scifact/) with automated evaluation! For information on the submission file format and evaluation metrics, see [evaluation.md](doc/evaluation.md). Or, check out the [getting started](https://leaderboard.allenai.org/scifact/submissions/get-started) page on the leaderboard.
 
 
 ## Dependencies

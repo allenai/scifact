@@ -1,13 +1,49 @@
-# Detailed scoring example
+# SciFact leaderboard submission and evaluation guidelines
+
+- [Submission format](#submission-format)
+- [Detailed scoring example](#detailed-scoring-example)
+
+## Submission format
+
+Each line in a leaderboard submission should contain a prediction for a single test set document. The schema is similar to that of the gold data described in [data.md](data.md), but simplified as follows: for each evidence document, the model is asked to predict a single label and a list of rationale sentences, rather than predicting rationales explicitly. More details can be found in the [paper](https://arxiv.org/abs/2004.14974).
+
+
+```python
+{
+    "id": number,                   # An integer claim ID.
+    "evidence": {                   # The evidence for the claim.
+        [doc_id]: {                 # The sentences and label for a single document, keyed by S2ORC ID.
+            "label": enum("SUPPORT" | "CONTRADICT"),
+            "sentences": number[]
+        }
+    },
+}
+```
+
+Note that `evidence` may be empty.
+
+Here's an example claim with two predicted evidence documents:
+```python
+{
+    'id': 84,
+    'evidence': {
+        '22406695': {'sentences': [1], 'label': 'SUPPORT'},
+        '7521113': {'sentences': [4], 'label': 'SUPPORT'}
+    }
+}
+```
+
+Run `./script/pipeline.sh oracle oracle-rationale test` and examine `predictions/merged_predictions.jsonl` to see an example of predictions on the full test set.
+
+## Detailed scoring example
 
 In this example, we walk through the process of evaluating the predictions for a single claim.
 
-
-## Gold
+### Gold
 
 The claim has evidence in two abstracts. Abstract `11` has two separate evidence sets that serve to verify the claim while abstract `15` has one.
 
-```
+```json
 {
   "claim": "ALDH1 expression is associated with poorer prognosis for breast cancer primary tumors.",
   "evidence": {
@@ -25,11 +61,11 @@ The claim has evidence in two abstracts. Abstract `11` has two separate evidence
 }
 ```
 
-## Predicted
+### Predicted
 
 The model predicts two abstracts are relevant to the claim. For each abstract, it provides a label and a list of sentences as evidence sentences.
 
-```
+```json
 {
   "claim": "ALDH1 expression is associated with poorer prognosis for breast cancer primary tumors.",
   "evidence": {
@@ -45,7 +81,7 @@ The model predicts two abstracts are relevant to the claim. For each abstract, i
 }
 ```
 
-## Abstract-level scoring
+### Abstract-level scoring
 
 An abstract is _correctly predicted_ if (1) it is a relevant abstract, (2) its predicted label matches gold label, and (3) at least one gold evidence set is contained among the predicted evidence sentences.
 
@@ -75,7 +111,7 @@ Finally, calculate precision, recall, and F1:
 - **Recall** = `1 / 2`
 - **F1**  = `1 / 2`
 
-## Sentence-level scoring
+### Sentence-level scoring
 
 An evidence sentence is _correctly predicted_ if (1) its from a relevant abstract, (2) the label of its abstract matches gold label, and (3) it is part of some gold evidence set, and (3) all other sentences in that same gold evidence set are _also_ among the predicted evidence sentences.
 
