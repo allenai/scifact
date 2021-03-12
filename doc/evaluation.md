@@ -45,6 +45,7 @@ The claim has evidence in two abstracts. Abstract `11` has two separate evidence
 
 ```javascript
 {
+  "id": 52,
   "claim": "ALDH1 expression is associated with poorer prognosis for breast cancer primary tumors.",
   "evidence": {
       "11": [                           // 2 evidence sets in document 11 support the claim.
@@ -57,7 +58,8 @@ The claim has evidence in two abstracts. Abstract `11` has two separate evidence
           { "sentences": [ 4 ],
              "label": "SUPPORT" }
       ]
-  }
+  },
+  "cited_doc_ids": [11, 15]
 }
 ```
 
@@ -67,7 +69,7 @@ The model predicts two abstracts are relevant to the claim. For each abstract, i
 
 ```javascript
 {
-  "claim": "ALDH1 expression is associated with poorer prognosis for breast cancer primary tumors.",
+  "id": 52,
   "evidence": {
       "11": {
           "sentences": [ 1, 11, 13 ],     // Predicted rationale sentences.
