@@ -5,7 +5,7 @@
 # Usage: bash script/rationale-selection.sh [bert-variant] [training-dataset] [dataset]
 # [bert-variant] options: "roberta_large", "roberta_base", "scibert", "biomed_roberta_base"
 # [training-dataset] options: "scifact", "fever_scifact", "fever", "snopes"
-# [dataset] options: "dev", "test"
+# [dataset] options: "dev"
 
 bert_variant=$1
 training_dataset=$2

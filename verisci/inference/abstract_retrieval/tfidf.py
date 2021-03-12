@@ -13,6 +13,9 @@ parser.add_argument('--max-gram', type=int, required=True)
 parser.add_argument('--output', type=str, required=True)
 args = parser.parse_args()
 
+# If we're doing the test data, don't evaluate.
+run_evaluation = "test" not in args.dataset
+
 corpus = list(jsonlines.open(args.corpus))
 dataset = list(jsonlines.open(args.dataset))
 output = jsonlines.open(args.output, 'w')
@@ -33,16 +36,18 @@ for data in dataset:
     doc_indices_rank = doc_scores.argsort()[::-1].tolist()
     doc_id_rank = [corpus[idx]['doc_id'] for idx in doc_indices_rank]
 
-    for gold_doc_id in data['evidence'].keys():
-        rank = doc_id_rank.index(int(gold_doc_id))
-        doc_ranks.append(rank)
+    if run_evaluation:
+        for gold_doc_id in data['evidence'].keys():
+            rank = doc_id_rank.index(int(gold_doc_id))
+            doc_ranks.append(rank)
 
     output.write({
         'claim_id': data['id'],
         'doc_ids': doc_id_rank[:k]
     })
 
-print(f'Mid reciprocal rank: {median(doc_ranks)}')
-print(f'Avg reciprocal rank: {mean(doc_ranks)}')
-print(f'Min reciprocal rank: {min(doc_ranks)}')
-print(f'Max reciprocal rank: {max(doc_ranks)}')
+if run_evaluation:
+    print(f'Mid reciprocal rank: {median(doc_ranks)}')
+    print(f'Avg reciprocal rank: {mean(doc_ranks)}')
+    print(f'Min reciprocal rank: {min(doc_ranks)}')
+    print(f'Max reciprocal rank: {max(doc_ranks)}')

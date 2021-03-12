@@ -1,11 +1,11 @@
 #!/bin/bash
 #
-# This script recreates table 4 of the paper.
+# This script makes full-pipeline predictions, and runs evaluation for the train
+# and dev folds.
 #
-# Usgae: bash script/pipeline.sh [retrieval] [model] [dataset]
-# [retrieval] options: "oracle", "open"
-# [model] options: "oracle-rationle", "zero-shot", "verisci"
-# [dataset] options: "dev", "test"
+# Usage: bash script/pipeline.sh [retrieval] [model] [dataset] [retrieval]
+# options: "oracle", "open" [model] options: "oracle-rationle", "zero-shot",
+# "verisci" [dataset] options: "dev", "test"
 
 retrieval=$1
 model=$2
@@ -105,8 +105,13 @@ python3 verisci/inference/merge_predictions.py \
 
 
 # Evaluate final predictions
-echo; echo "Evaluating."
-python3 verisci/evaluate/pipeline.py \
-    --gold data/claims_${dataset}.jsonl \
-    --corpus data/corpus.jsonl \
-    --prediction prediction/merged_predictions.jsonl
+if  [ $dataset == "test" ]
+then
+    echo "Test set; skipping evaluation."
+else
+    echo "Evaluating on fold $dataset"
+    python3 verisci/evaluate/pipeline.py \
+        --gold data/claims_${dataset}.jsonl \
+        --corpus data/corpus.jsonl \
+        --prediction prediction/merged_predictions.jsonl
+fi

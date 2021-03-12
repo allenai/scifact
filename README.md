@@ -52,7 +52,7 @@ pip install -r requirements.txt
 
 ## Run models for paper metrics
 
-We provide scripts let you easily run our models and re-create the metrics published in paper. The script will automatically download the dataset and pre-trained models. You should be able to reproduce our dev set results from the paper by following these instructions (we are not releasing test set labels at this point). Please post an issue if you're unable to do this.
+We provide scripts let you easily run our models and re-create the dev set metrics published in paper. The script will automatically download the dataset and pre-trained models. You should be able to reproduce our dev set results from the paper by following these instructions (we are not releasing test set labels at this point). Please post an issue if you're unable to do this.
 
 To recreate Table 3 rationale selection metrics:
 ```bash
@@ -64,15 +64,23 @@ To recreate Table 3 label prediction metrics:
 ```
 - `[bert-variant]` options: `roberta_large`, `roberta_base`, `scibert`, `biomed_roberta_base`
 - `[training-dataset]` options: `scifact`, `scifact_only_claim`, `scifact_only_rationale`, `fever_scifact`, `fever`, `snopes`
-- `[dataset]` options: `dev`, `test`
+- `[dataset]` options: `dev`.
 
-To recreate Table 4:
+
+To make full-pipeline predictions, you can use:
 ```bash
 ./script/pipeline.sh [retrieval] [model] [dataset]
 ```
 - `[retrieval]` options: `oracle`, `open`
 - `[model]` options: `oracle-rationale`, `zero-shot`, `verisci`
-- `[dataset]` options: `dev`, `test`
+- `[dataset]` options: `dev`, `test`.
+
+For the dev set, this script will also compute performance metrics. For the test set the "gold" labels are not public, so the script will just make predictions without evaluating.
+
+
+## Make full-pipeline predictions
+
+Since the test set is not public, you can't recreate the test set metrics reported in Table 4. However, you can make predictions on the test set
 
 
 ## Dataset
