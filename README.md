@@ -75,7 +75,9 @@ To make full-pipeline predictions, you can use:
 - `[model]` options: `oracle-rationale`, `zero-shot`, `verisci`
 - `[dataset]` options: `dev`, `test`.
 
-For the dev set, this script will also compute performance metrics. For the test set the "gold" labels are not public, so the script will just make predictions without evaluating.
+Two notes on this:
+- For the dev set, this script will also compute performance metrics. For the test set the "gold" labels are not public, so the script will just make predictions without evaluating.
+- `oracle` retrieval will break on the `test` set, since it requires access to the gold evidence documents. But `open` retrieval will work on both `dev` and `test`.
 
 
 ## Make full-pipeline predictions
