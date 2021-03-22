@@ -82,7 +82,7 @@ Two notes on this:
 
 ## Make full-pipeline predictions
 
-Since the test set is not public, you can't recreate the test set metrics reported in Table 4. However, you can make predictions on the test set
+Since the test set is not public, you can't recreate the test set metrics reported in Table 4. However, you can make predictions on the test set; see above.
 
 
 ## Dataset
