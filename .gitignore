@@ -4,3 +4,4 @@ __pycache__*
 **/prediction*/*
 **/scratch/*
 **/fever/*
+metrics/*
