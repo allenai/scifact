@@ -1,11 +1,11 @@
 #!/bin/bash
 #
-# This script recreates the label-prediction results on table 3 of the paper
+# This script recreates the label-prediction results on table 3 of the paper.
 #
 # Usage: bash script/label-prediction.sh [bert-variant] [training-dataset] [dataset]
 # [bert-variant] options: "roberta_large", "roberta_base", "scibert", "biomed_roberta_base"
 # [training-dataset] options: "scifact", "fever_scifact", "fever", "snopes"
-# [dataset] options: "dev", "test"
+# [dataset] options: "dev"
 
 bert_variant=$1
 training_dataset=$2
