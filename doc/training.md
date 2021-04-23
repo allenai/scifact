@@ -11,7 +11,7 @@ All the training scripts are located in the `/verisci/training` folder
 ## Common Arguments
 
 * `--model`: Model argument allows you to select what pretrained model to use.
-             Options include `roberta-base`, `roberta-large`, `allenai/scifact_scivocab_uncased`, `allenai/biomed_roberta_base`, and `PATH TO CHECKPOINT`.
+             Options include `roberta-base`, `roberta-large`, `allenai/scibert_scivocab_uncased`, `allenai/biomed_roberta_base`, and `PATH TO CHECKPOINT`.
              Note that if you select non-roberta model. You may need to edit the script where it is commented.
 * `--dest`: The folder to save weights. The script saves on every epoch.
 * `--batch-size-gpu`: The batch size to pass through GPU. You may need to lower this if your GPU has small memory.
