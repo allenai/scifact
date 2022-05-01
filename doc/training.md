@@ -56,12 +56,12 @@ python verisci/training/label_prediction/transformer_scifact.py \
 You will need to download Fever dataset and Wiki Dump manually
 ```shell script
 # Download Fever dataset:
-wget https://s3-eu-west-1.amazonaws.com/fever.public/train.jsonl
-wget https://s3-eu-west-1.amazonaws.com/fever.public/paper_dev.jsonl
-wget https://s3-eu-west-1.amazonaws.com/fever.public/paper_test.jsonl
+wget https://fever.ai/download/fever/train.jsonl
+wget https://fever.ai/download/fever/paper_dev.jsonl
+wget https://fever.ai/download/fever/paper_test.jsonl
 
 # Download Wikipedia Dump and unzip it manually.
-wget https://s3-eu-west-1.amazonaws.com/fever.public/wiki-pages.zip
+wget https://fever.ai/download/fever/wiki-pages.zip
 unzip wiki-pages.zip
 ```
 
