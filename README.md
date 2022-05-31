@@ -10,13 +10,14 @@ This repository contains data and code for the paper [Fact or Fiction: Verifying
 
 You can also check out our COVID-19 claim verification [demo](https://scifact.apps.allenai.org). For a heavier-weight COVID claim verifier, see the section on [verifying COVID-19 claims](#verify-claims-about-covid-19).
 
+**Update (May 2022)**: The MultiVerS model, which achieves SOTA on SciFact and two other scientific claim verification datasets, is available at <https://github.com/dwadden/multivers>.
 
 **Update (Dec 2020)**: SciFact will be used for the [SciVer](https://sdproc.org/2021/sharedtasks.html#sciver) shared task to be featured at the SDP workshop at NAACL 2021.  Registration is open!
-
 
 **Update (Dec 2020)**: Claim / citation context data now available to train claim generation models. See [Claim generation data](#claim-generation-data).
 
 ## Table of contents
+
 - [Leaderboard](#leaderboard)
 - [Dependencies](#dependencies)
 - [Run models for paper metrics](#run-models-for-paper-metrics)
@@ -27,25 +28,28 @@ You can also check out our COVID-19 claim verification [demo](https://scifact.ap
 - [Citation](#citation)
 - [Contact](#contact)
 
-
 ## Leaderboard
 
 **UPDATE (Jan 2021)**: We now have an official [AI2 leaderboard](https://leaderboard.allenai.org/scifact/) with automated evaluation! For information on the submission file format and evaluation metrics, see [evaluation.md](doc/evaluation.md). Or, check out the [getting started](https://leaderboard.allenai.org/scifact/submissions/get-started) page on the leaderboard.
 
-
 ## Dependencies
 
 We recommend you create an anaconda environment:
+
 ```bash
 conda create --name scifact python=3.7 conda-build
 ```
+
 Then, from the `scifact` project root, run
+
 ```
 conda develop .
 ```
+
 which will add the scifact code to your `PYTHONPATH`.
 
 Then, install Python requirements:
+
 ```
 pip install -r requirements.txt
 ```
@@ -55,42 +59,48 @@ pip install -r requirements.txt
 We provide scripts let you easily run our models and re-create the dev set metrics published in paper. The script will automatically download the dataset and pre-trained models. You should be able to reproduce our dev set results from the paper by following these instructions (we are not releasing test set labels at this point). Please post an issue if you're unable to do this.
 
 To recreate Table 3 rationale selection metrics:
+
 ```bash
 ./script/rationale-selection.sh [bert-variant] [training-dataset] [dataset]
 ```
+
 To recreate Table 3 label prediction metrics:
+
 ```bash
 ./script/label-prediction.sh [bert-variant] [training-dataset] [dataset]
 ```
+
 - `[bert-variant]` options: `roberta_large`, `roberta_base`, `scibert`, `biomed_roberta_base`
 - `[training-dataset]` options: `scifact`, `scifact_only_claim`, `scifact_only_rationale`, `fever_scifact`, `fever`, `snopes`
 - `[dataset]` options: `dev`.
 
-
 To make full-pipeline predictions, you can use:
+
 ```bash
 ./script/pipeline.sh [retrieval] [model] [dataset]
 ```
+
 - `[retrieval]` options: `oracle`, `open`
 - `[model]` options: `oracle-rationale`, `zero-shot`, `verisci`
 - `[dataset]` options: `dev`, `test`.
 
 Two notes on this:
+
 - For the dev set, this script will also compute performance metrics. For the test set the "gold" labels are not public, so the script will just make predictions without evaluating.
 - `oracle` retrieval will break on the `test` set, since it requires access to the gold evidence documents. But `open` retrieval will work on both `dev` and `test`.
-
 
 ## Make full-pipeline predictions
 
 Since the test set is not public, you can't recreate the test set metrics reported in Table 4. However, you can make predictions on the test set; see above.
 
-
 ## Dataset
 
 Download with script: The data will be downloaded and stored in the `data` directory.
+
 ```bash
 ./script/download-data.sh
 ```
+
 Or, [click here](https://scifact.s3-us-west-2.amazonaws.com/release/latest/data.tar.gz) to download the tarball.
 
 The claims are split into `claims_train.jsonl`, `claims_dev.jsonl`, and `claims_test.jsonl`, one claim per line. The claim and dev sets contain labels, while the test set is unlabeled. For test set evaluation, submit to the [leaderboard](https://leaderboard.allenai.org/scifact)! The corpus of evidence documents is `corpus.jsonl`, one evidence document per line.
@@ -115,7 +125,6 @@ data
 
 See [data.md](doc/data.md) for descriptions of the schemas for each file type.
 
-
 ### Claim generation data
 
 We also make available the collection of claims together with the documents and citation contexts they are based on. We hope that these data will facilitate the training of "claim generation" models that can summarize a citation context into atomic claims. Click [here](https://scifact.s3-us-west-2.amazonaws.com/release/latest/claims_with_citances.jsonl) to download the file, or enter
@@ -126,13 +135,14 @@ wget https://scifact.s3-us-west-2.amazonaws.com/release/latest/claims_with_citan
 
 For more information on the data, see [claims-with-citances.md](doc/claims-with-citances.md)
 
-
 ## Download pre-trained models
 
 All "BERT-to-BERT"-style models as described in the paper are stored in a public AWS S3 bucket. You can download the models models using the script:
+
 ```bash
 ./script/download-model.sh [model-component] [bert-variant] [training-dataset]
 ```
+
 - `[model-component]` options: `rationale`, `label`
 - `[bert-variant]` options: `roberta_large`, `roberta_base`, `scibert`, `biomed_roberta_base`
 - `[training-dataset]` options: `scifact`, `scifact_only_claim`, `scifact_only_rationale`, `fever_scifact`, `fever`, `snopes`
@@ -140,6 +150,7 @@ All "BERT-to-BERT"-style models as described in the paper are stored in a public
 The script checks to make sure the downloaded model doesn't already exist before starting new downloads.
 
 The best-performing pipeline reported in [paper](https://arxiv.org/abs/2004.14974) uses:
+
 - `rationale`: `roberta_large` + `scifact`
 - `label`: `roberta_large` + `fever_scifact`
 
