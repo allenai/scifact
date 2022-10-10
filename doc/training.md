@@ -11,7 +11,7 @@ All the training scripts are located in the `/verisci/training` folder
 ## Common Arguments
 
 * `--model`: Model argument allows you to select what pretrained model to use.
-             Options include `roberta-base`, `roberta-large`, `allenai/scifact_scivocab_uncased`, `allenai/biomed_roberta_base`, and `PATH TO CHECKPOINT`.
+             Options include `roberta-base`, `roberta-large`, `allenai/scibert_scivocab_uncased`, `allenai/biomed_roberta_base`, and `PATH TO CHECKPOINT`.
              Note that if you select non-roberta model. You may need to edit the script where it is commented.
 * `--dest`: The folder to save weights. The script saves on every epoch.
 * `--batch-size-gpu`: The batch size to pass through GPU. You may need to lower this if your GPU has small memory.
@@ -56,12 +56,12 @@ python verisci/training/label_prediction/transformer_scifact.py \
 You will need to download Fever dataset and Wiki Dump manually
 ```shell script
 # Download Fever dataset:
-wget https://s3-eu-west-1.amazonaws.com/fever.public/train.jsonl
-wget https://s3-eu-west-1.amazonaws.com/fever.public/paper_dev.jsonl
-wget https://s3-eu-west-1.amazonaws.com/fever.public/paper_test.jsonl
+wget https://fever.ai/download/fever/train.jsonl
+wget https://fever.ai/download/fever/paper_dev.jsonl
+wget https://fever.ai/download/fever/paper_test.jsonl
 
 # Download Wikipedia Dump and unzip it manually.
-wget https://s3-eu-west-1.amazonaws.com/fever.public/wiki-pages.zip
+wget https://fever.ai/download/fever/wiki-pages.zip
 unzip wiki-pages.zip
 ```
 
