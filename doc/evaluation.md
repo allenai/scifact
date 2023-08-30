@@ -127,7 +127,7 @@ Precision and recall are defined as follows:
 Let's count the predicted and gold evidence sentences:
 
 - **# predicted evidence sentences**: 3 (abstract 11) + 2 (abstract 16) = 5 total
-- **# gold evidence sentences**: 3 (abstract 11) + 2 (abstract 15) = 4 total
+- **# gold evidence sentences**: 3 (abstract 11) + 1 (abstract 15) = 4 total
 
 Now, count the number of correctly predicted evidence sentences:
 
