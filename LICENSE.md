@@ -6,7 +6,7 @@ All claims and evidence annotations -- in the files `claims_*.jsonl` -- are rele
 
 ## Abstracts
 
-The abstracts in the corpus -- in the file `corpus.jsonl` -- are part of the Semantic Scholar [S2ORC dataset](https://github.com/allenai/s2orc) and are licensed under [ODB-By 1.0](https://opendatacommons.org/licenses/by/1-0/).
+The abstracts in the corpus -- in the file `corpus.jsonl` -- are part of the Semantic Scholar [S2ORC dataset](https://github.com/allenai/s2orc) and are licensed under [ODC-By 1.0](https://opendatacommons.org/licenses/by/1-0/).
 
 
 ## Code
