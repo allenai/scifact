@@ -137,7 +137,7 @@ For more information on the data, see [claims-with-citances.md](doc/claims-with-
 
 ## Download pre-trained models
 
-All "BERT-to-BERT"-style models as described in the paper are stored in a public AWS S3 bucket. You can download the models models using the script:
+All "BERT-to-BERT"-style models as described in the paper are stored in a public AWS S3 bucket. You can download the models using the script:
 
 ```bash
 ./script/download-model.sh [model-component] [bert-variant] [training-dataset]
