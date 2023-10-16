@@ -7,7 +7,7 @@ docutils==0.15.2
 filelock==3.0.12
 idna==2.9
 jmespath==0.9.5
-joblib==0.14.1
+joblib==1.2.0
 jsonlines==1.2.0
 numpy==1.18.2
 pandas==1.0.3
